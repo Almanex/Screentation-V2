@@ -1,0 +1,9 @@
+=== CRASH LOG ===
+Time: 20.06.2026 18:04:14
+Message: Cannot find a Resource with the Name/Key ControlAltFillColorDefaultBrush [Line: 54 Position: 75]
+Exception: Microsoft.UI.Xaml.Markup.XamlParseException: Не удалось найти текст, связанный с этим кодом ошибки.
+
+Cannot find a Resource with the Name/Key ControlAltFillColorDefaultBrush [Line: 54 Position: 75]
+Inner Exception: 
+Stack Trace: 
+Handled: False

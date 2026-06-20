@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Screentation (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Screentation (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Screentation.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Screentation"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- Left Sidebar (Thumbnails) -->
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="1" />
+            <!-- Center Canvas -->
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1" />
+            <!-- Right Panel (Tools & Export) -->
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+
+        <!-- LEFT SIDEBAR -->
+        <Grid Grid.Column="0" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,0,1,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Sidebar Title -->
+            <StackPanel Grid.Row="0" Padding="16" Spacing="8">
+                <TextBlock Text="Скриншоты" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="SemiBold" />
+                <Button x:Name="BtnPaste" Click="BtnPaste_Click" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE77F;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                        <TextBlock Text="Вставить из буфера" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <!-- Thumbnails List -->
+            <ListView x:Name="ListViewThumbnails" Grid.Row="1" SelectionMode="Single" SelectionChanged="ListViewThumbnails_SelectionChanged" Padding="8,0">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Margin" Value="0,4" />
+                        <Setter Property="Padding" Value="4" />
+                        <Setter Property="CornerRadius" Value="8" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ScreenshotSession">
+                        <Grid Padding="4" Height="90" Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="6" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                                <Border Width="100" Height="70" CornerRadius="4" Background="Black" VerticalAlignment="Center">
+                                    <Image Source="{x:Bind Thumbnail}" Stretch="Uniform" />
+                                </Border>
+                                <TextBlock Text="{x:Bind Name}" VerticalAlignment="Center" FontWeight="Medium" TextTrimming="CharacterEllipsis" MaxWidth="80" />
+                            </StackPanel>
+
+                            <!-- Delete Button -->
+                            <Button Grid.Column="1" Click="BtnDeleteSession_Click" VerticalAlignment="Center" Margin="0,0,4,0" Padding="6" Background="Transparent" BorderBrush="Transparent">
+                                <FontIcon Glyph="&#xE74D;" FontSize="14" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{ThemeResource SystemControlErrorTextForegroundBrush}" />
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <TextBlock x:Name="TextNoScreenshots" Grid.Row="1" Text="Список пуст. Скопируйте скриншот в буфер обмена!" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Padding="24" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+            <!-- Footer info -->
+            <StackPanel Grid.Row="2" Padding="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
+                <TextBlock Text="Screentation v1.0" FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Splitter Left -->
+        <Border Grid.Column="1" Width="1" Background="{ThemeResource CardStrokeColorDefaultBrush}" VerticalAlignment="Stretch" />
+
+        <!-- CENTER CANVAS AREA -->
+        <Grid Grid.Column="2" Background="{ThemeResource ControlAltFillColorTertiaryBrush}">
+            <local:AnnotationCanvas x:Name="DrawingCanvas" SelectionChanged="DrawingCanvas_SelectionChanged" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            
+            <TextBlock x:Name="TextCanvasPlaceholder" Text="Ожидание скриншота..." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+            <!-- Crop Confirmation Bar -->
+            <Border x:Name="BorderCropActions" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,24" Padding="12,8" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Spacing="16">
+                    <TextBlock Text="Режим кадрирования" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="12" />
+                    <Button x:Name="BtnApplyCrop" Click="BtnApplyCrop_Click" Content="Применить (Enter)" Style="{StaticResource AccentButtonStyle}" Padding="12,6" FontSize="12" />
+                    <Button x:Name="BtnCancelCrop" Click="BtnCancelCrop_Click" Content="Отмена (Esc)" Padding="12,6" FontSize="12" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Splitter Right -->
+        <Border Grid.Column="3" Width="1" Background="{ThemeResource CardStrokeColorDefaultBrush}" VerticalAlignment="Stretch" />
+
+        <!-- RIGHT CONTROL PANEL -->
+        <ScrollViewer Grid.Column="4" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1,0,0,0" VerticalScrollBarVisibility="Auto">
+            <StackPanel Padding="16" Spacing="20">
+                <!-- Group 1: Tools -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Инструменты" FontWeight="SemiBold" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    
+                    <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*,*" RowSpacing="8" ColumnSpacing="8">
+                        <ToggleButton x:Name="ToolBtnSelect" Grid.Row="0" Grid.Column="0" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Select">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xEF20;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Выбор" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ToolBtnRect" Grid.Row="0" Grid.Column="1" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Rect">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xE7A4;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Рамка" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ToolBtnArrow" Grid.Row="0" Grid.Column="2" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Arrow">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xE72A;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Стрелка" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ToolBtnStep" Grid.Row="1" Grid.Column="0" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Step">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xE8FD;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Шаг" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ToolBtnBlur" Grid.Row="1" Grid.Column="1" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Blur">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xF158;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Размытие" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ToolBtnEraser" Grid.Row="1" Grid.Column="2" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Eraser">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xED60;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Штамп" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ToolBtnText" Grid.Row="2" Grid.Column="0" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Text">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xE8D2;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Текст" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ToolBtnCrop" Grid.Row="2" Grid.Column="1" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Crop">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xE8B9;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Кадр" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                    </Grid>
+
+                    <Button x:Name="BtnResetSteps" Click="BtnResetSteps_Click" HorizontalAlignment="Stretch" Margin="0,4,0,0">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE8B2;" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="12" />
+                            <TextBlock Text="Сбросить счетчик шагов" FontSize="12" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- Group 2: Parameters -->
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Параметры линии и цвета" FontWeight="SemiBold" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    
+                    <!-- Line thickness -->
+                    <StackPanel Spacing="4">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0" Text="Толщина линии" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Grid.Column="1" Text="{Binding ElementName=SliderThickness, Path=Value}" FontSize="12" FontWeight="SemiBold" />
+                        </Grid>
+                        <Slider x:Name="SliderThickness" Minimum="1" Maximum="8" StepFrequency="1" ValueChanged="SliderThickness_ValueChanged" />
+                    </StackPanel>
+
+                    <!-- Semi-transparent fill for Rect -->
+                    <CheckBox x:Name="CheckboxHasFill" Content="Полупрозрачная заливка (Рамка)" Checked="CheckboxHasFill_Checked" Unchecked="CheckboxHasFill_Checked" FontSize="12" />
+
+                    <!-- Color palette -->
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Цветовая палитра" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <GridView x:Name="GridViewColors" SelectionMode="Single" SelectionChanged="GridViewColors_SelectionChanged" HorizontalAlignment="Center">
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="4" ItemWidth="40" ItemHeight="40" />
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="local:ColorItem">
+                                    <Grid Width="30" Height="30" CornerRadius="15" Background="{x:Bind Brush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                                        <Ellipse Width="10" Height="10" Fill="White" Visibility="{x:Bind IsSelectedVisibility}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                        <Button x:Name="BtnCustomColor" HorizontalAlignment="Stretch" Margin="0,4,0,0">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE790;" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="12" />
+                                <TextBlock Text="Выбрать цвет..." FontSize="12" />
+                            </StackPanel>
+                            <Button.Flyout>
+                                <Flyout x:Name="FlyoutColorPicker">
+                                    <StackPanel Spacing="12" Padding="4">
+                                        <ColorPicker x:Name="CustomColorPicker" 
+                                                     ColorSpectrumShape="Box" 
+                                                     IsColorPreviewVisible="True" 
+                                                     IsColorChannelTextInputVisible="True" 
+                                                     IsHexInputVisible="True" 
+                                                     IsAlphaEnabled="False"
+                                                     ColorChanged="CustomColorPicker_ColorChanged" />
+                                        <Button Content="Применить" Click="BtnApplyCustomColor_Click" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Text Font Size -->
+                    <StackPanel x:Name="PanelFontSize" Spacing="4" Visibility="Collapsed">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0" Text="Размер шрифта" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Grid.Column="1" Text="{Binding ElementName=SliderFontSize, Path=Value}" FontSize="12" FontWeight="SemiBold" />
+                        </Grid>
+                        <Slider x:Name="SliderFontSize" Minimum="12" Maximum="72" StepFrequency="2" Value="36" ValueChanged="SliderFontSize_ValueChanged" />
+                    </StackPanel>
+
+                    <!-- Step Options -->
+                    <StackPanel x:Name="PanelStepSettings" Spacing="8" Visibility="Collapsed">
+                        <TextBlock Text="Настройки шагов" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <ComboBox x:Name="ComboStepFormat" SelectionChanged="ComboStepFormat_SelectionChanged" HorizontalAlignment="Stretch" FontSize="12" SelectedIndex="0">
+                            <ComboBoxItem Content="Цифры (1, 2, 3...)" Tag="Numeric" />
+                            <ComboBoxItem Content="Буквы (A, B, C...)" Tag="AlphaUpper" />
+                            <ComboBoxItem Content="Буквы (a, b, c...)" Tag="AlphaLower" />
+                        </ComboBox>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <TextBlock Grid.Column="0" Text="Следующий шаг" FontSize="12" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <NumberBox x:Name="NumNextStep" Grid.Column="1" Value="1" Minimum="1" SpinButtonPlacementMode="Compact" Width="90" ValueChanged="NumNextStep_ValueChanged" />
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Group: Zoom -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Вид" FontWeight="SemiBold" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock x:Name="TxtZoomLevel" Grid.Column="0" Text="Масштаб: 100%" VerticalAlignment="Center" FontSize="12" />
+                        <Button x:Name="BtnResetZoom" Grid.Column="1" Click="BtnResetZoom_Click" Content="Сбросить" Padding="8,4" FontSize="11" />
+                    </Grid>
+                    <Slider x:Name="SliderZoom" Minimum="10" Maximum="400" Value="100" StepFrequency="5" ValueChanged="SliderZoom_ValueChanged" />
+                </StackPanel>
+
+                <!-- Group 3: History -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="История" FontWeight="SemiBold" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <Grid ColumnDefinitions="*,*">
+                        <Button x:Name="BtnUndo" Grid.Column="0" Click="BtnUndo_Click" HorizontalAlignment="Stretch" Margin="0,0,4,0">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE7A7;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Отмена" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnRedo" Grid.Column="1" Click="BtnRedo_Click" HorizontalAlignment="Stretch" Margin="4,0,0,0">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE7A6;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Повтор" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Group 4: Export Settings -->
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Экспорт" FontWeight="SemiBold" Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+                    <!-- Export Path -->
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Папка сохранения" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                            <TextBox x:Name="TxtExportPath" Grid.Column="0" TextChanged="TxtExportPath_TextChanged" FontSize="12" />
+                            <Button x:Name="BtnBrowsePath" Grid.Column="1" Click="BtnBrowsePath_Click" Padding="8,4">
+                                <FontIcon Glyph="&#xED25;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Export Format -->
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Формат файла" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <ComboBox x:Name="ComboFormat" SelectionChanged="ComboFormat_SelectionChanged" HorizontalAlignment="Stretch" FontSize="12">
+                            <ComboBoxItem Content="PNG" Tag="PNG" />
+                            <ComboBoxItem Content="JPEG" Tag="JPEG" />
+                            <ComboBoxItem Content="WebP" Tag="WebP" />
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Compression Quality -->
+                    <StackPanel x:Name="PanelQuality" Spacing="4">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0" Text="Качество сжатия" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Grid.Column="1" Text="{Binding ElementName=SliderQuality, Path=Value}" FontSize="12" FontWeight="SemiBold" />
+                        </Grid>
+                        <Slider x:Name="SliderQuality" Minimum="10" Maximum="100" StepFrequency="5" ValueChanged="SliderQuality_ValueChanged" />
+                    </StackPanel>
+
+                    <!-- Naming Template -->
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Шаблон имени" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBox x:Name="TxtNamingTemplate" TextChanged="TxtNamingTemplate_TextChanged" FontSize="12" />
+                        <TextBlock Text="Используйте [N] для нумерации" FontSize="10" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+
+                    <!-- Action Buttons -->
+                    <StackPanel Spacing="8" Margin="0,10,0,0">
+                        <Button x:Name="BtnSaveActive" Click="BtnSaveActive_Click" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE74E;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Сохранить текущий" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnSaveAll" Click="BtnSaveAll_Click" HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE78C;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock Text="Сохранить все" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
