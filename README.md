@@ -1,62 +1,64 @@
+[ English ](README.md) • [ Русский ](README_RU.md) • [ Deutsch ](README_DE.md)
+
 # Screentation
 
-**Screentation** — это нативное Windows-приложение для быстрого создания, редактирования и аннотирования скриншотов. Написано на C# с использованием современного интерфейса **WinUI 3 (Windows App SDK)** и графической библиотеки **Win2D** для аппаратного рендеринга.
+**Screentation** is a native Windows application for quickly creating, editing and annotating screenshots. Written in C# using the modern interface **WinUI 3 (Windows App SDK)** and the graphics library **Win2D** for hardware rendering.
 
-Приложение позволяет мгновенно захватывать скриншоты из буфера обмена (в том числе в свернутом состоянии), наносить поверх них стрелки, рамки, текст, размывать конфиденциальные данные, обрезать изображения и автоматически нумеровать шаги инструкций (как цифрами, так и латинскими буквами).
+The application allows you to instantly capture screenshots from the clipboard (including in a minimized state), apply arrows, frames, text on top of them, blur sensitive data, crop images and automatically number instruction steps (both in numbers and in Latin letters).
 
 ---
 
-## 📖 Руководство пользователя (User Guide)
+## User Guide
 
-### Основные возможности
-1. **Автоматический захват**: Когда приложение открыто или просто свёрнуто в трей, при нажатии `PrintScreen` (или создании снимка через «Ножницы» Windows) скриншот автоматически добавляется в список слева.
-2. **Инструменты аннотирования**:
-   - **Выбор (Select)**: Выделение, перемещение и изменение размеров нанесенных элементов.
-   - **Рамка (Rect)**: Создание прямоугольных областей (опционально с полупрозрачной заливкой).
-   - **Стрелка (Arrow)**: Создание указательных стрелок.
-   - **Размытие (Blur)**: Эффект размытия по Гауссу для скрытия конфиденциальной информации.
-   - **Штамп (Eraser)**: Копирование и перенос текстуры (клонирование области) для скрытия элементов интерфейса.
-   - **Текст (Text)**: Ввод произвольного текста на холсте с возможностью изменения размера шрифта и цвета.
-   - **Шаг (Step)**: Автоматическая последовательность шагов.
-3. **Умное кадрирование (Crop)**:
-   - Позволяет обрезать снимок экрана по любой прямоугольной области.
-   - При подтверждении обрезки все ранее нарисованные элементы смещаются на соответствующий вектор, оставаясь точно на своих местах относительно обрезанного кадра.
-4. **Масштабирование и навигация (Zoom & Pan)**:
-   - Масштабирование выполняется зажатием клавиши **`Ctrl` + колесико мыши** (фокусируется на курсоре) либо перетаскиванием **ползунка масштабирования (Slider)** в правой панели.
-   - Перемещение по увеличенному холсту выполняется **зажатием средней кнопки мыши (колесика)** и перетаскиванием.
-   - Кнопка **«Сбросить»** возвращает масштаб в режим «по размеру окна».
-5. **Нумерация шагов**:
-   - Поддерживает 3 формата: Цифры (`1, 2, 3...`), Латинские заглавные (`A, B... Z, AA...`), Латинские строчные (`a, b... z, aa...`).
-   - Поле «Следующий шаг» позволяет задавать стартовый номер или изменять текущий индекс.
-6. **Выбор цвета**:
-   - Доступны готовые быстрые цвета.
-   - Кнопка **«Выбрать цвет...»** открывает спектральную палитру (ColorPicker) для выбора любого пользовательского оттенка. Выбранный цвет сохраняется между перезапусками приложения.
+### Key Features
+1. **Automatic Capture**: When the application is open or simply minimized to tray, when you click `PrintScreen` (or take a photo using Windows Snipping Tool), the screenshot is automatically added to the list on the left.
+2. **Annotation Tools**:
+ - **Select**: Select, move and resize applied elements.
+ - **Frame (Rect)**: Creates rectangular areas (optional with translucent fill).
+ - **Arrow**: Create directional arrows.
+ - **Blur**: Gaussian blur effect to hide sensitive information.
+ - **Eraser**: Copy and transfer texture (clone area) to hide interface elements.
+ - **Text**: Enter custom text on the canvas with the ability to change font size and color.
+ - **Step**: Automatic sequence of steps.
+3. **Smart Crop**:
+ - Allows you to crop the screenshot to any rectangular area.
+ - When cropping is confirmed, all previously drawn elements are shifted to the corresponding vector, remaining exactly in their places relative to the cropped frame.
+4. **Zoom & Pan**:
+ - Scaling is performed by holding the **`Ctrl` key + mouse wheel** (focuses on the cursor) or by dragging the **scaling slider** in the right panel.
+ - Moving around the enlarged canvas is done by **holding the middle mouse button (wheel)** and dragging.
+ - The **“Reset”** button returns the scale to the “fit to window” mode.
+5. **Numbering of steps**:
+ - Supports 3 formats: Numbers (`1, 2, 3...`), Latin capital letters (`A, B... Z, AA...`), Latin small letters (`a, b... z, aa...`).
+ - The “Next step” field allows you to set the starting number or change the current index.
+6. **Color selection**:
+ - Ready-made quick colors available.
+ - The **“Select color...”** button opens the spectral palette (ColorPicker) for selecting any custom shade. The selected color is retained between application restarts.
 
-### Горячие клавиши (Keyboard Shortcuts)
-| Клавиша | Действие |
+### Keyboard Shortcuts
+| Key | Action |
 | :--- | :--- |
-| `Ctrl + V` | Вставить скриншот из буфера обмена вручную |
-| `Ctrl + Z` | Отменить последнее действие (Undo) |
-| `Ctrl + Y` / `Ctrl + Shift + Z` | Повторить отмененное действие (Redo) |
-| `Ctrl + S` | Сохранить активный скриншот на диск |
-| `Ctrl + Shift + S` | Сохранить все скриншоты (пакетное сохранение) |
-| `Delete` / `Backspace` | Удалить выделенный элемент аннотации |
-| `Escape` | Выйти из текущего режима / сбросить выделение |
-| `Enter` *(в режиме кадра)* | Применить обрезку |
-| `Escape` *(в режиме кадра)* | Отменить обрезку |
-| `1`, `2`, `3`, `4`, `5` | Быстрый выбор инструментов: Рамка, Шаг, Стрелка, Размытие, Штамп |
+| `Ctrl + V` | Paste screenshot from clipboard manually |
+| `Ctrl + Z` | Undo last action (Undo) |
+| `Ctrl + Y` / `Ctrl + Shift + Z` | Redo a undone action (Redo) |
+| `Ctrl + S` | Save active screenshot to disk |
+| `Ctrl + Shift + S` | Save all screenshots (batch saving) |
+| `Delete` / `Backspace` | Delete selected annotation element |
+| `Escape` | Exit current mode / reset selection |
+| `Enter` *(in frame mode)* | Apply crop |
+| `Escape` *(in frame mode)* | Undo crop |
+| `1`, `2`, `3`, `4`, `5` | Quick selection of tools: Frame, Step, Arrow, Blur, Stamp |
 
 ---
 
-## 💻 Руководство разработчика (Developer Guide)
+## Developer Guide
 
-### Стек технологий
-* **Платформа**: .NET 10.0, Windows 10/11
+### Technology stack
+* **Platform**: .NET 10.0, Windows 10/11
 * **UI Framework**: WinUI 3 (Windows App SDK 2.2.0)
-* **Графика**: Win2D (Microsoft.Graphics.Win2D 1.4.0) — аппаратный 2D-рендеринг на базе Direct2D
-* **Системная интеграция**: Subclassing окон (Comctl32) для перехвата Win32-событий буфера обмена
+* **Graphics**: Win2D (Microsoft.Graphics.Win2D 1.4.0) hardware 2D rendering based on Direct2D
+* **System integration**: Subclassing windows (Comctl32) to intercept Win32 clipboard events
 
-### Структура проекта
+### Project structure
 ```
 Screentation/
 ├── Assets/                    # Иконки, заставки и графические ресурсы
@@ -73,41 +75,41 @@ Screentation/
 └── Screentation.csproj        # Файл конфигурации проекта
 ```
 
-### Архитектура ключевых компонентов
+### Key Component Architecture
 
-#### 1. Фоновый перехват буфера обмена (`ClipboardMonitor.cs`)
-Для стабильного перехвата скриншотов в свёрнутом состоянии используется Win32-функция `AddClipboardFormatListener`, регистрирующая окно приложения в цепочке прослушивания буфера обмена. При изменении данных окно получает системное сообщение `WM_CLIPBOARDUPDATE`.
-* **Защита от блокировок**: Поскольку источник снимка (например, ножницы Windows) блокирует буфер на время записи, перед чтением данных делается пауза в 100 мс и запускается цикл из 10 попыток обращения (`OpenClipboard`).
-* **Дедупликация**: Windows отправляет несколько обновлений подряд для разных форматов одних и тех же данных. Для предотвращения дубликатов считывается заголовок DIB-картинки, вычисляются контрольные пиксели и сверяются с предыдущим снимком. Если контент идентичен и получен в пределах 2 секунд от прошлого снимка, он отсекается как системный дубликат.
+#### 1. Background clipboard interception (`ClipboardMonitor.cs`)
+To reliably intercept screenshots in a minimized state, the Win32 function `AddClipboardFormatListener` is used, which registers the application window in the clipboard listening chain. When data changes, the window receives the `WM_CLIPBOARDUPDATE` system message.
+* **Lock protection**: Because the snapshot source (eg Windows Clipboard) locks the buffer while it is being written, it pauses for 100 ms before reading the data and starts a cycle of 10 access attempts (`OpenClipboard`).
+* **Deduplication**: Windows sends multiple updates in a row for different formats of the same data. To prevent duplicates, the DIB image header is read, reference pixels are calculated and checked against the previous image. If the content is identical and received within 2 seconds of the previous snapshot, it is cut off as a system duplicate.
 
-#### 2. Интерактивный холст (`AnnotationCanvas.cs`)
-Наследуется от `Grid` и содержит `CanvasControl` (Win2D). 
-* **Координатная сетка**: Все координаты аннотаций хранятся в оригинальном разрешении скриншота. При отрисовке к контексту Win2D применяется матрица трансформации (`Matrix3x2.CreateScale(_scale) * Matrix3x2.CreateTranslation(_offsetX, _offsetY)`), благодаря чему все фигуры масштабируются и перемещаются плавно и без потери четкости.
-* **Текстовый редактор**: При размещении текста на холст динамически проецируется стандартный контрол `TextBox` с включенным свойством `Loaded`-фокусировки и выравниванием по левому-верхнему краю холста. Потеря фокуса или клавиша `Enter` запекают текст в векторный `TextElement`.
+#### 2. Interactive canvas (`AnnotationCanvas.cs`)
+Inherits from `Grid` and contains `CanvasControl` (Win2D). 
+* **Grid**: All annotation coordinates are stored in the original screenshot resolution. When rendering, a transformation matrix is ​​applied to the Win2D context (`Matrix3x2.CreateScale(_scale) * Matrix3x2.CreateTranslation(_offsetX, _offsetY)`), due to which all shapes are scaled and moved smoothly and without loss of clarity.
+* **Text editor**: When placing text on the canvas, the standard `TextBox` control is dynamically projected with the `Loaded` focus property enabled and aligned to the top-left edge of the canvas. Losing focus or pressing `Enter` bakes the text into a vector `TextElement`.
 
-#### 3. Рендеринг фигур (`AnnotationDrawer.cs`)
-Статический класс, выполняющий низкоуровневую прорисовку векторных примитивов на `CanvasDrawingSession`. Размытие реализуется с помощью эффекта `GaussianBlurEffect` на базе исходного кэша текстуры `CanvasBitmap`.
+#### 3. Rendering shapes (`AnnotationDrawer.cs`)
+Static class that performs low-level drawing of vector primitives on the `CanvasDrawingSession`. Blurring is implemented using the `GaussianBlurEffect` effect based on the original `CanvasBitmap` texture cache.
 
 ---
 
-## 🛠️ Сборка и запуск (Build & Run)
+## ️ Build & Run
 
-### Требования
-* ОС: Windows 10 (версия 1809 / сборка 17763) или более новая.
-* Visual Studio 2022 с установленным компонентом **Разработка приложений для платформы Windows (UWP/WinUI)** или .NET 10 SDK.
+### Requirements
+* OS: Windows 10 (version 1809 / build 17763) or newer.
+* Visual Studio 2022 with **Application development for the Windows platform (UWP/WinUI)** or .NET 10 SDK installed.
 
-### Команды сборки в CLI
-Сборка проекта:
+###Build commands in the CLI
+Build the project:
 ```bash
 dotnet build
 ```
 
-Запуск приложения:
+Launching the application:
 ```bash
 dotnet run
 ```
 
-Публикация (выходной релиз без зависимостей):
+Publishing (output release without dependencies):
 ```bash
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
