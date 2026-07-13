@@ -20,24 +20,15 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!--
+            TaskbarIcon without ContextFlyout in XAML.
+            The context menu is built entirely in code-behind to avoid
+            ElementName binding issues (MenuFlyout is not in the visual tree).
+        -->
         <tb:TaskbarIcon
             x:Name="MyTaskbarIcon"
             ToolTipText="Screentation"
-            IconSource="ms-appx:///Assets/AppIcon.ico">
-            <tb:TaskbarIcon.ContextFlyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem
-                        x:Uid="TrayOpen"
-                        Text="Открыть Screentation"
-                        Command="{Binding OpenCommand, ElementName=RootWindow}" />
-                    <MenuFlyoutSeparator />
-                    <MenuFlyoutItem
-                        x:Uid="TrayExit"
-                        Text="Выход"
-                        Command="{Binding ExitCommand, ElementName=RootWindow}" />
-                </MenuFlyout>
-            </tb:TaskbarIcon.ContextFlyout>
-        </tb:TaskbarIcon>
+            IconSource="ms-appx:///Assets/AppIcon.ico" />
 
         <TitleBar x:Name="AppTitleBar" Title="Screentation">
             <TitleBar.IconSource>

@@ -1,6 +1,8 @@
 using System;
 using System.Windows.Input;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.Windows.ApplicationModel.Resources;
 
 namespace Screentation;
 
@@ -8,22 +10,13 @@ public sealed partial class MainWindow : Window
 {
     public static MainWindow? Instance { get; private set; }
 
-    // Keep a static reference to prevent GC from collecting the tray icon
-    private static H.NotifyIcon.TaskbarIcon? _trayIcon;
+    // Static reference prevents GC from collecting the tray icon
+    private static H.NotifyIcon.TaskbarIcon? _trayIconRef;
     private bool _isExiting = false;
-
-    // Commands exposed for XAML binding
-    public ICommand OpenCommand { get; }
-    public ICommand ExitCommand { get; }
 
     public MainWindow()
     {
         Instance = this;
-
-        // Build commands before InitializeComponent so XAML bindings resolve
-        OpenCommand = new TrayRelayCommand(RestoreWindow);
-        ExitCommand = new TrayRelayCommand(ExitApplication);
-
         InitializeComponent();
 
         ExtendsContentIntoTitleBar = true;
@@ -31,18 +24,50 @@ public sealed partial class MainWindow : Window
 
         AppWindow.SetIcon("Assets/AppIcon.ico");
 
-        // Intercept closing event to hide the window instead of closing it
+        // Intercept window close button — hide to tray instead of exiting
         AppWindow.Closing += AppWindow_Closing;
 
-        // Store strong reference and hook double-click
-        _trayIcon = MyTaskbarIcon;
-        MyTaskbarIcon.DoubleClickCommand = OpenCommand;
+        // Build tray context menu entirely in code-behind.
+        // XAML ElementName bindings do NOT work inside ContextFlyout because
+        // MenuFlyout is not part of the visual tree of the Window.
+        _BuildTrayMenu();
 
-        // Navigate the root frame to the main page on startup
+        // Double-click on tray icon restores the window
+        MyTaskbarIcon.DoubleClickCommand = new TrayRelayCommand(RestoreWindow);
+
+        // Keep a static strong reference to prevent garbage collection
+        _trayIconRef = MyTaskbarIcon;
+
+        // Navigate to main page
         RootFrame.Navigate(typeof(MainPage));
     }
 
-    private void AppWindow_Closing(Microsoft.UI.Windowing.AppWindow sender, Microsoft.UI.Windowing.AppWindowClosingEventArgs e)
+    private void _BuildTrayMenu()
+    {
+        var loader = new ResourceLoader();
+
+        var openItem = new MenuFlyoutItem
+        {
+            Text = loader.GetString("TrayOpen/Text")
+        };
+        openItem.Click += (_, _) => RestoreWindow();
+
+        var exitItem = new MenuFlyoutItem
+        {
+            Text = loader.GetString("TrayExit/Text")
+        };
+        exitItem.Click += (_, _) => ExitApplication();
+
+        var flyout = new MenuFlyout();
+        flyout.Items.Add(openItem);
+        flyout.Items.Add(new MenuFlyoutSeparator());
+        flyout.Items.Add(exitItem);
+
+        MyTaskbarIcon.ContextFlyout = flyout;
+    }
+
+    private void AppWindow_Closing(Microsoft.UI.Windowing.AppWindow sender,
+        Microsoft.UI.Windowing.AppWindowClosingEventArgs e)
     {
         if (!_isExiting)
         {
@@ -61,7 +86,7 @@ public sealed partial class MainWindow : Window
     {
         _isExiting = true;
         try { MyTaskbarIcon.Dispose(); } catch { }
-        try { _trayIcon?.Dispose(); } catch { }
+        try { _trayIconRef?.Dispose(); } catch { }
         Environment.Exit(0);
     }
 }
