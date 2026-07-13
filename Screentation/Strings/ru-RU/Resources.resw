@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SidebarTitle.Text" xml:space="preserve">
+    <value>Скриншоты</value>
+  </data>
+  <data name="BtnPasteText.Text" xml:space="preserve">
+    <value>Вставить из буфера</value>
+  </data>
+  <data name="TextNoScreenshots.Text" xml:space="preserve">
+    <value>Список пуст. Скопируйте скриншот в буфер обмена!</value>
+  </data>
+  <data name="FooterVersion.Text" xml:space="preserve">
+    <value>Screentation v1.0</value>
+  </data>
+  <data name="TextCanvasPlaceholder.Text" xml:space="preserve">
+    <value>Ожидание скриншота...</value>
+  </data>
+  <data name="TextCropMode.Text" xml:space="preserve">
+    <value>Режим кадрирования</value>
+  </data>
+  <data name="BtnApplyCrop.Content" xml:space="preserve">
+    <value>Применить (Enter)</value>
+  </data>
+  <data name="BtnCancelCrop.Content" xml:space="preserve">
+    <value>Отмена (Esc)</value>
+  </data>
+  <data name="ToolsTitle.Text" xml:space="preserve">
+    <value>Инструменты</value>
+  </data>
+  <data name="ToolBtnSelectText.Text" xml:space="preserve">
+    <value>Выбор</value>
+  </data>
+  <data name="ToolBtnRectText.Text" xml:space="preserve">
+    <value>Рамка</value>
+  </data>
+  <data name="ToolBtnArrowText.Text" xml:space="preserve">
+    <value>Стрелка</value>
+  </data>
+  <data name="ToolBtnStepText.Text" xml:space="preserve">
+    <value>Шаг</value>
+  </data>
+  <data name="ToolBtnBlurText.Text" xml:space="preserve">
+    <value>Размытие</value>
+  </data>
+  <data name="ToolBtnEraserText.Text" xml:space="preserve">
+    <value>Штамп</value>
+  </data>
+  <data name="ToolBtnTextText.Text" xml:space="preserve">
+    <value>Текст</value>
+  </data>
+  <data name="ToolBtnCropText.Text" xml:space="preserve">
+    <value>Кадр</value>
+  </data>
+  <data name="BtnResetStepsText.Text" xml:space="preserve">
+    <value>Сбросить счетчик шагов</value>
+  </data>
+  <data name="LineColorParamsTitle.Text" xml:space="preserve">
+    <value>Параметры линии и цвета</value>
+  </data>
+  <data name="LineThicknessLabel.Text" xml:space="preserve">
+    <value>Толщина линии</value>
+  </data>
+  <data name="CheckboxHasFill.Content" xml:space="preserve">
+    <value>Полупрозрачная заливка (Рамка)</value>
+  </data>
+  <data name="ColorPaletteLabel.Text" xml:space="preserve">
+    <value>Цветовая палитра</value>
+  </data>
+  <data name="BtnCustomColorText.Text" xml:space="preserve">
+    <value>Выбрать цвет...</value>
+  </data>
+  <data name="BtnApplyCustomColor.Content" xml:space="preserve">
+    <value>Применить</value>
+  </data>
+  <data name="TextFontSizeLabel.Text" xml:space="preserve">
+    <value>Размер шрифта</value>
+  </data>
+  <data name="StepSettingsLabel.Text" xml:space="preserve">
+    <value>Настройки шагов</value>
+  </data>
+  <data name="ComboStepFormatNumeric.Content" xml:space="preserve">
+    <value>Цифры (1, 2, 3...)</value>
+  </data>
+  <data name="ComboStepFormatAlphaUpper.Content" xml:space="preserve">
+    <value>Буквы (A, B, C...)</value>
+  </data>
+  <data name="ComboStepFormatAlphaLower.Content" xml:space="preserve">
+    <value>Буквы (a, b, c...)</value>
+  </data>
+  <data name="TextNextStepLabel.Text" xml:space="preserve">
+    <value>Следующий шаг</value>
+  </data>
+  <data name="ViewTitle.Text" xml:space="preserve">
+    <value>Вид</value>
+  </data>
+  <data name="BtnResetZoom.Content" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
+  <data name="HistoryTitle.Text" xml:space="preserve">
+    <value>История</value>
+  </data>
+  <data name="BtnUndoText.Text" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="BtnRedoText.Text" xml:space="preserve">
+    <value>Повтор</value>
+  </data>
+  <data name="ExportTitle.Text" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="TextExportPathLabel.Text" xml:space="preserve">
+    <value>Папка сохранения</value>
+  </data>
+  <data name="TextExportFormatLabel.Text" xml:space="preserve">
+    <value>Формат файла</value>
+  </data>
+  <data name="TextCompressionQualityLabel.Text" xml:space="preserve">
+    <value>Качество сжатия</value>
+  </data>
+  <data name="TextNamingTemplateLabel.Text" xml:space="preserve">
+    <value>Шаблон имени</value>
+  </data>
+  <data name="TextNamingTemplateHelp.Text" xml:space="preserve">
+    <value>Используйте [N] для нумерации</value>
+  </data>
+  <data name="BtnSaveActiveText.Text" xml:space="preserve">
+    <value>Сохранить текущий</value>
+  </data>
+  <data name="BtnSaveAllText.Text" xml:space="preserve">
+    <value>Сохранить все</value>
+  </data>
+  <data name="TrayOpen.Text" xml:space="preserve">
+    <value>Открыть Screentation</value>
+  </data>
+  <data name="TrayExit.Text" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="ScreenshotNameTemplate" xml:space="preserve">
+    <value>Скриншот {0}</value>
+  </data>
+  <data name="ZoomLevelTemplate" xml:space="preserve">
+    <value>Масштаб: {0}%</value>
+  </data>
+  <data name="DialogSuccess" xml:space="preserve">
+    <value>Успех</value>
+  </data>
+  <data name="DialogError" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="SaveActiveSuccess" xml:space="preserve">
+    <value>Активный скриншот успешно сохранен!</value>
+  </data>
+  <data name="SaveActiveError" xml:space="preserve">
+    <value>Не удалось сохранить скриншот:
+{0}</value>
+  </data>
+  <data name="SaveAllSuccess" xml:space="preserve">
+    <value>Все скриншоты ({0}) успешно сохранены!</value>
+  </data>
+  <data name="SaveAllError" xml:space="preserve">
+    <value>Не удалось выполнить пакетное сохранение:
+{0}</value>
+  </data>
+</root>

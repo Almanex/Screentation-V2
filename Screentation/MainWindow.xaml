@@ -25,9 +25,9 @@
             IconSource="ms-appx:///Assets/AppIcon.ico">
             <tb:TaskbarIcon.ContextFlyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem Text="Открыть Screentation" Click="OpenItem_Click" />
+                    <MenuFlyoutItem x:Uid="TrayOpen" Text="Открыть Screentation" Click="OpenItem_Click" />
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="Выход" Click="ExitItem_Click" />
+                    <MenuFlyoutItem x:Uid="TrayExit" Text="Выход" Click="ExitItem_Click" />
                 </MenuFlyout>
             </tb:TaskbarIcon.ContextFlyout>
         </tb:TaskbarIcon>

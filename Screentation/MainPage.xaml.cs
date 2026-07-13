@@ -27,6 +27,7 @@ public sealed partial class MainPage : Page
     private ClipboardMonitor? _clipboardMonitor;
     private int _screenshotCounter = 0;
     private bool _isInitialized = false;
+    private readonly Microsoft.Windows.ApplicationModel.Resources.ResourceLoader _resourceLoader = new();
 
     public MainPage()
     {
@@ -64,11 +65,11 @@ public sealed partial class MainPage : Page
         DrawingCanvas.ZoomChanged += (s, ev) => 
         {
             float pct = DrawingCanvas.ZoomPercent;
-            TxtZoomLevel.Text = $"Масштаб: {pct:F0}%";
+            TxtZoomLevel.Text = string.Format(_resourceLoader.GetString("ZoomLevelTemplate"), pct);
             SliderZoom.Value = pct;
         };
         SliderZoom.Value = DrawingCanvas.ZoomPercent;
-        TxtZoomLevel.Text = $"Масштаб: {DrawingCanvas.ZoomPercent:F0}%";
+        TxtZoomLevel.Text = string.Format(_resourceLoader.GetString("ZoomLevelTemplate"), DrawingCanvas.ZoomPercent);
 
         DrawingCanvas.NextStepValueChanged += (s, val) => NumNextStep.Value = val;
         DrawingCanvas.ActiveFontSize = (float)SliderFontSize.Value;
@@ -181,7 +182,7 @@ public sealed partial class MainPage : Page
             var thumbnailBitmap = await ImageHelper.ScaleSoftwareBitmapAsync(bitmap, 160);
             var thumbnailSource = await ImageHelper.CreateSourceFromSoftwareBitmapAsync(thumbnailBitmap);
 
-            string name = $"Скриншот {++_screenshotCounter}";
+            string name = string.Format(_resourceLoader.GetString("ScreenshotNameTemplate"), ++_screenshotCounter);
             var session = new ScreenshotSession(bitmap, thumbnailSource, name);
             
             // Hook history changes to update undo/redo buttons
@@ -227,7 +228,7 @@ public sealed partial class MainPage : Page
                 var thumbnailBitmap = await ImageHelper.ScaleSoftwareBitmapAsync(softwareBitmap, 160);
                 var thumbnailSource = await ImageHelper.CreateSourceFromSoftwareBitmapAsync(thumbnailBitmap);
 
-                string name = $"Скриншот {++_screenshotCounter}";
+                string name = string.Format(_resourceLoader.GetString("ScreenshotNameTemplate"), ++_screenshotCounter);
                 var session = new ScreenshotSession(softwareBitmap, thumbnailSource, name);
                 session.History.HistoryChanged += (s, e) => UpdateUIState();
 
@@ -516,11 +517,11 @@ public sealed partial class MainPage : Page
                 SettingsManager.Current.NamingTemplate
             );
 
-            ShowStatusDialog("Успех", "Активный скриншот успешно сохранен!");
+            ShowStatusDialog(_resourceLoader.GetString("DialogSuccess"), _resourceLoader.GetString("SaveActiveSuccess"));
         }
         catch (Exception ex)
         {
-            ShowStatusDialog("Ошибка", $"Не удалось сохранить скриншот:\n{ex.Message}");
+            ShowStatusDialog(_resourceLoader.GetString("DialogError"), string.Format(_resourceLoader.GetString("SaveActiveError"), ex.Message));
         }
     }
 
@@ -550,11 +551,11 @@ public sealed partial class MainPage : Page
                 );
             }
 
-            ShowStatusDialog("Успех", $"Все скриншоты ({_sessions.Count}) успешно сохранены!");
+            ShowStatusDialog(_resourceLoader.GetString("DialogSuccess"), string.Format(_resourceLoader.GetString("SaveAllSuccess"), _sessions.Count));
         }
         catch (Exception ex)
         {
-            ShowStatusDialog("Ошибка", $"Не удалось выполнить пакетное сохранение:\n{ex.Message}");
+            ShowStatusDialog(_resourceLoader.GetString("DialogError"), string.Format(_resourceLoader.GetString("SaveAllError"), ex.Message));
         }
     }
 

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SidebarTitle.Text" xml:space="preserve">
+    <value>Screenshots</value>
+  </data>
+  <data name="BtnPasteText.Text" xml:space="preserve">
+    <value>Paste from Clipboard</value>
+  </data>
+  <data name="TextNoScreenshots.Text" xml:space="preserve">
+    <value>The list is empty. Copy a screenshot to the clipboard!</value>
+  </data>
+  <data name="FooterVersion.Text" xml:space="preserve">
+    <value>Screentation v1.0</value>
+  </data>
+  <data name="TextCanvasPlaceholder.Text" xml:space="preserve">
+    <value>Waiting for screenshot...</value>
+  </data>
+  <data name="TextCropMode.Text" xml:space="preserve">
+    <value>Crop Mode</value>
+  </data>
+  <data name="BtnApplyCrop.Content" xml:space="preserve">
+    <value>Apply (Enter)</value>
+  </data>
+  <data name="BtnCancelCrop.Content" xml:space="preserve">
+    <value>Cancel (Esc)</value>
+  </data>
+  <data name="ToolsTitle.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="ToolBtnSelectText.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="ToolBtnRectText.Text" xml:space="preserve">
+    <value>Frame</value>
+  </data>
+  <data name="ToolBtnArrowText.Text" xml:space="preserve">
+    <value>Arrow</value>
+  </data>
+  <data name="ToolBtnStepText.Text" xml:space="preserve">
+    <value>Step</value>
+  </data>
+  <data name="ToolBtnBlurText.Text" xml:space="preserve">
+    <value>Blur</value>
+  </data>
+  <data name="ToolBtnEraserText.Text" xml:space="preserve">
+    <value>Stamp</value>
+  </data>
+  <data name="ToolBtnTextText.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="ToolBtnCropText.Text" xml:space="preserve">
+    <value>Crop</value>
+  </data>
+  <data name="BtnResetStepsText.Text" xml:space="preserve">
+    <value>Reset Step Counter</value>
+  </data>
+  <data name="LineColorParamsTitle.Text" xml:space="preserve">
+    <value>Line &amp; Color Settings</value>
+  </data>
+  <data name="LineThicknessLabel.Text" xml:space="preserve">
+    <value>Line Thickness</value>
+  </data>
+  <data name="CheckboxHasFill.Content" xml:space="preserve">
+    <value>Semi-transparent Fill (Frame)</value>
+  </data>
+  <data name="ColorPaletteLabel.Text" xml:space="preserve">
+    <value>Color Palette</value>
+  </data>
+  <data name="BtnCustomColorText.Text" xml:space="preserve">
+    <value>Select Color...</value>
+  </data>
+  <data name="BtnApplyCustomColor.Content" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="TextFontSizeLabel.Text" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="StepSettingsLabel.Text" xml:space="preserve">
+    <value>Step Settings</value>
+  </data>
+  <data name="ComboStepFormatNumeric.Content" xml:space="preserve">
+    <value>Numbers (1, 2, 3...)</value>
+  </data>
+  <data name="ComboStepFormatAlphaUpper.Content" xml:space="preserve">
+    <value>Letters (A, B, C...)</value>
+  </data>
+  <data name="ComboStepFormatAlphaLower.Content" xml:space="preserve">
+    <value>Letters (a, b, c...)</value>
+  </data>
+  <data name="TextNextStepLabel.Text" xml:space="preserve">
+    <value>Next Step</value>
+  </data>
+  <data name="ViewTitle.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="BtnResetZoom.Content" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="HistoryTitle.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="BtnUndoText.Text" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="BtnRedoText.Text" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="ExportTitle.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="TextExportPathLabel.Text" xml:space="preserve">
+    <value>Save Folder</value>
+  </data>
+  <data name="TextExportFormatLabel.Text" xml:space="preserve">
+    <value>File Format</value>
+  </data>
+  <data name="TextCompressionQualityLabel.Text" xml:space="preserve">
+    <value>Compression Quality</value>
+  </data>
+  <data name="TextNamingTemplateLabel.Text" xml:space="preserve">
+    <value>Naming Template</value>
+  </data>
+  <data name="TextNamingTemplateHelp.Text" xml:space="preserve">
+    <value>Use [N] for numbering</value>
+  </data>
+  <data name="BtnSaveActiveText.Text" xml:space="preserve">
+    <value>Save Current</value>
+  </data>
+  <data name="BtnSaveAllText.Text" xml:space="preserve">
+    <value>Save All</value>
+  </data>
+  <data name="TrayOpen.Text" xml:space="preserve">
+    <value>Open Screentation</value>
+  </data>
+  <data name="TrayExit.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="ScreenshotNameTemplate" xml:space="preserve">
+    <value>Screenshot {0}</value>
+  </data>
+  <data name="ZoomLevelTemplate" xml:space="preserve">
+    <value>Zoom: {0}%</value>
+  </data>
+  <data name="DialogSuccess" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="DialogError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="SaveActiveSuccess" xml:space="preserve">
+    <value>Active screenshot successfully saved!</value>
+  </data>
+  <data name="SaveActiveError" xml:space="preserve">
+    <value>Failed to save screenshot:
+{0}</value>
+  </data>
+  <data name="SaveAllSuccess" xml:space="preserve">
+    <value>All screenshots ({0}) successfully saved!</value>
+  </data>
+  <data name="SaveAllError" xml:space="preserve">
+    <value>Failed to perform batch save:
+{0}</value>
+  </data>
+</root>

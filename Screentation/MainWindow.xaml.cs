@@ -49,6 +49,7 @@ public sealed partial class MainWindow : Window
         _isExiting = true;
         MyTaskbarIcon.Dispose();
         Application.Current.Exit();
+        Environment.Exit(0);
     }
 
     private void OpenItem_Click(object sender, RoutedEventArgs e)
