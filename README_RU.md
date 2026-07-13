@@ -8,6 +8,13 @@
 
 ---
 
+<p align="center">
+  <img src="screenshots/screentation_01.png" alt="Screentation Canvas" width="49%" />
+  <img src="screenshots/screentation_02.png" alt="Screentation Editor" width="49%" />
+</p>
+
+---
+
 ## Руководство пользователя (User Guide)
 
 ### Основные возможности

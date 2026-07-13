@@ -8,6 +8,13 @@ Mit der Anwendung können Sie sofort Screenshots aus der Zwischenablage aufnehme
 
 ---
 
+<p align="center">
+  <img src="screenshots/screentation_01.png" alt="Screentation Canvas" width="49%" />
+  <img src="screenshots/screentation_02.png" alt="Screentation Editor" width="49%" />
+</p>
+
+---
+
 ## Benutzerhandbuch
 
 ### Hauptmerkmale
