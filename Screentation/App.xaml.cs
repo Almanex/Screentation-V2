@@ -40,10 +40,6 @@ public partial class App : Application
                                $"Stack Trace: {e.Exception?.StackTrace}\n" +
                                $"Handled: {e.Handled}\n";
             File.WriteAllText(logPath, errorText);
-            
-            // Also write to project directory if possible
-            string projectLogPath = @"D:\Develop\ScreenTort\Screentation\crash.txt";
-            File.WriteAllText(projectLogPath, errorText);
         }
         catch
         {
@@ -60,15 +56,22 @@ public partial class App : Application
         }
         catch (Exception ex)
         {
-            // Catch startup exceptions and write to log
-            string logPath = @"D:\Develop\ScreenTort\Screentation\crash.txt";
-            string errorText = $"=== STARTUP CRASH LOG ===\n" +
-                               $"Time: {DateTime.Now}\n" +
-                               $"Message: {ex.Message}\n" +
-                               $"Exception: {ex}\n" +
-                               $"Inner Exception: {ex.InnerException?.ToString()}\n" +
-                               $"Stack Trace: {ex.StackTrace}\n";
-            File.WriteAllText(logPath, errorText);
+            try
+            {
+                // Catch startup exceptions and write to log relative to application base directory
+                string logPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.txt");
+                string errorText = $"=== STARTUP CRASH LOG ===\n" +
+                                   $"Time: {DateTime.Now}\n" +
+                                   $"Message: {ex.Message}\n" +
+                                   $"Exception: {ex}\n" +
+                                   $"Inner Exception: {ex.InnerException?.ToString()}\n" +
+                                   $"Stack Trace: {ex.StackTrace}\n";
+                File.WriteAllText(logPath, errorText);
+            }
+            catch
+            {
+                // Ignore log write failures
+            }
             throw;
         }
     }
