@@ -52,3 +52,6 @@ _ReSharper*/
 # Generated files
 Generated\ Files/
 *_wpftmp.csproj
+
+# Release archives (uploaded to GitHub Releases, not tracked in git)
+*.zip

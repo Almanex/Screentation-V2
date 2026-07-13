@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Window
     x:Class="Screentation.MainWindow"
+    x:Name="RootWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -25,9 +26,15 @@
             IconSource="ms-appx:///Assets/AppIcon.ico">
             <tb:TaskbarIcon.ContextFlyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem x:Uid="TrayOpen" Text="Открыть Screentation" Click="OpenItem_Click" />
+                    <MenuFlyoutItem
+                        x:Uid="TrayOpen"
+                        Text="Открыть Screentation"
+                        Command="{Binding OpenCommand, ElementName=RootWindow}" />
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem x:Uid="TrayExit" Text="Выход" Click="ExitItem_Click" />
+                    <MenuFlyoutItem
+                        x:Uid="TrayExit"
+                        Text="Выход"
+                        Command="{Binding ExitCommand, ElementName=RootWindow}" />
                 </MenuFlyout>
             </tb:TaskbarIcon.ContextFlyout>
         </tb:TaskbarIcon>

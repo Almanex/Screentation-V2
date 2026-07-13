@@ -7,11 +7,23 @@ namespace Screentation;
 public sealed partial class MainWindow : Window
 {
     public static MainWindow? Instance { get; private set; }
+
+    // Keep a static reference to prevent GC from collecting the tray icon
+    private static H.NotifyIcon.TaskbarIcon? _trayIcon;
     private bool _isExiting = false;
+
+    // Commands exposed for XAML binding
+    public ICommand OpenCommand { get; }
+    public ICommand ExitCommand { get; }
 
     public MainWindow()
     {
         Instance = this;
+
+        // Build commands before InitializeComponent so XAML bindings resolve
+        OpenCommand = new TrayRelayCommand(RestoreWindow);
+        ExitCommand = new TrayRelayCommand(ExitApplication);
+
         InitializeComponent();
 
         ExtendsContentIntoTitleBar = true;
@@ -19,13 +31,14 @@ public sealed partial class MainWindow : Window
 
         AppWindow.SetIcon("Assets/AppIcon.ico");
 
-        // Intercept closing event to hide the window
+        // Intercept closing event to hide the window instead of closing it
         AppWindow.Closing += AppWindow_Closing;
 
-        // Hook double click command on tray icon
-        MyTaskbarIcon.DoubleClickCommand = new TrayRelayCommand(RestoreWindow);
+        // Store strong reference and hook double-click
+        _trayIcon = MyTaskbarIcon;
+        MyTaskbarIcon.DoubleClickCommand = OpenCommand;
 
-        // Navigate the root frame to the main page on startup.
+        // Navigate the root frame to the main page on startup
         RootFrame.Navigate(typeof(MainPage));
     }
 
@@ -33,8 +46,8 @@ public sealed partial class MainWindow : Window
     {
         if (!_isExiting)
         {
-            e.Cancel = true; // Prevent application exit
-            AppWindow.Hide(); // Hide main window
+            e.Cancel = true;
+            AppWindow.Hide();
         }
     }
 
@@ -47,26 +60,16 @@ public sealed partial class MainWindow : Window
     public void ExitApplication()
     {
         _isExiting = true;
-        MyTaskbarIcon.Dispose();
-        Application.Current.Exit();
+        try { MyTaskbarIcon.Dispose(); } catch { }
+        try { _trayIcon?.Dispose(); } catch { }
         Environment.Exit(0);
-    }
-
-    private void OpenItem_Click(object sender, RoutedEventArgs e)
-    {
-        RestoreWindow();
-    }
-
-    private void ExitItem_Click(object sender, RoutedEventArgs e)
-    {
-        ExitApplication();
     }
 }
 
 public class TrayRelayCommand : ICommand
 {
     private readonly Action _execute;
-    
+
     public TrayRelayCommand(Action execute)
     {
         _execute = execute;
