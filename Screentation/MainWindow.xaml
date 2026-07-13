@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Window
     x:Class="Screentation.MainWindow"
-    x:Name="RootWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Screentation"
-    xmlns:tb="using:H.NotifyIcon"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Screentation"
     mc:Ignorable="d">
+
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
@@ -19,16 +18,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
-        <!--
-            TaskbarIcon without ContextFlyout in XAML.
-            The context menu is built entirely in code-behind to avoid
-            ElementName binding issues (MenuFlyout is not in the visual tree).
-        -->
-        <tb:TaskbarIcon
-            x:Name="MyTaskbarIcon"
-            ToolTipText="Screentation"
-            IconSource="ms-appx:///Assets/AppIcon.ico" />
 
         <TitleBar x:Name="AppTitleBar" Title="Screentation">
             <TitleBar.IconSource>

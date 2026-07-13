@@ -1,8 +1,7 @@
 using System;
-using System.Windows.Input;
+using System.IO;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.Windows.ApplicationModel.Resources;
+using WinRT.Interop;
 
 namespace Screentation;
 
@@ -10,9 +9,9 @@ public sealed partial class MainWindow : Window
 {
     public static MainWindow? Instance { get; private set; }
 
-    // Static reference prevents GC from collecting the tray icon
-    private static H.NotifyIcon.TaskbarIcon? _trayIconRef;
+    private TrayManager? _trayManager;
     private bool _isExiting = false;
+    private bool _trayInitialized = false;
 
     public MainWindow()
     {
@@ -22,57 +21,46 @@ public sealed partial class MainWindow : Window
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
 
+        // Set window/taskbar icon at runtime
         AppWindow.SetIcon("Assets/AppIcon.ico");
 
-        // Intercept window close button — hide to tray instead of exiting
+        // Intercept X button — hide to tray instead of closing
         AppWindow.Closing += AppWindow_Closing;
 
-        // Build tray context menu entirely in code-behind.
-        // XAML ElementName bindings do NOT work inside ContextFlyout because
-        // MenuFlyout is not part of the visual tree of the Window.
-        _BuildTrayMenu();
+        // Initialize tray AFTER window is shown (HWND must be fully created)
+        this.Activated += OnFirstActivated;
 
-        // Double-click on tray icon restores the window
-        MyTaskbarIcon.DoubleClickCommand = new TrayRelayCommand(RestoreWindow);
-
-        // Keep a static strong reference to prevent garbage collection
-        _trayIconRef = MyTaskbarIcon;
-
-        // Navigate to main page
         RootFrame.Navigate(typeof(MainPage));
     }
 
-    private void _BuildTrayMenu()
+    private void OnFirstActivated(object sender, WindowActivatedEventArgs e)
     {
-        var loader = new ResourceLoader();
+        // Only run once
+        if (_trayInitialized) return;
+        _trayInitialized = true;
 
-        var openItem = new MenuFlyoutItem
-        {
-            Text = loader.GetString("TrayOpen/Text")
-        };
-        openItem.Click += (_, _) => RestoreWindow();
+        var hwnd = WindowNative.GetWindowHandle(this);
 
-        var exitItem = new MenuFlyoutItem
-        {
-            Text = loader.GetString("TrayExit/Text")
-        };
-        exitItem.Click += (_, _) => ExitApplication();
+        // Resolve icon path: in publish layout, Assets/ is next to the .exe
+        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        string iconPath = Path.Combine(baseDir, "Assets", "AppIcon.ico");
 
-        var flyout = new MenuFlyout();
-        flyout.Items.Add(openItem);
-        flyout.Items.Add(new MenuFlyoutSeparator());
-        flyout.Items.Add(exitItem);
-
-        MyTaskbarIcon.ContextFlyout = flyout;
+        _trayManager = new TrayManager(
+            hwnd:     hwnd,
+            iconPath: iconPath,
+            tooltip:  "Screentation",
+            onOpen:   RestoreWindow,
+            onExit:   ExitApplication);
     }
 
-    private void AppWindow_Closing(Microsoft.UI.Windowing.AppWindow sender,
+    private void AppWindow_Closing(
+        Microsoft.UI.Windowing.AppWindow sender,
         Microsoft.UI.Windowing.AppWindowClosingEventArgs e)
     {
         if (!_isExiting)
         {
-            e.Cancel = true;
-            AppWindow.Hide();
+            e.Cancel = true;   // Don't close the process
+            AppWindow.Hide();  // Just hide the window
         }
     }
 
@@ -85,24 +73,11 @@ public sealed partial class MainWindow : Window
     public void ExitApplication()
     {
         _isExiting = true;
-        try { MyTaskbarIcon.Dispose(); } catch { }
-        try { _trayIconRef?.Dispose(); } catch { }
+
+        // Dispose removes the tray icon from the notification area
+        try { _trayManager?.Dispose(); } catch { }
+
+        // Force-terminate the process including all background threads
         Environment.Exit(0);
     }
-}
-
-public class TrayRelayCommand : ICommand
-{
-    private readonly Action _execute;
-
-    public TrayRelayCommand(Action execute)
-    {
-        _execute = execute;
-    }
-
-    public bool CanExecute(object? parameter) => true;
-
-    public void Execute(object? parameter) => _execute();
-
-    public event EventHandler? CanExecuteChanged;
 }
