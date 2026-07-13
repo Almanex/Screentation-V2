@@ -109,7 +109,11 @@ dotnet build
 dotnet run
 ```
 
-Публикация (выходной релиз без зависимостей):
+Публикация (полностью автономный релиз в один файл):
 ```bash
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
+Результат будет сохранен в папку `Screentation/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/` и будет состоять из:
+- **`Screentation.exe`** (один исполняемый файл ~300 МБ, содержащий .NET 10.0 Runtime, Windows App SDK и все системные DLL)
+- **`Assets/`** (папка с иконками и логотипами)
+- **`Screentation.pdb`** (символы отладки, не обязательны для работы)

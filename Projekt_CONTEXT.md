@@ -13,7 +13,7 @@
 * **Среда выполнения**: .NET 10.0 (TargetFramework: `net10.0-windows10.0.26100.0`, минимальная поддерживаемая версия Windows: 10.0.17763.0)
 * **Язык программирования**: C# 13
 * **Интерфейс (UI)**: WinUI 3 (входит в состав Windows App SDK версии `2.2.0`)
-* **Тип сборки**: Unpackaged (`<WindowsPackageType>None</WindowsPackageType>`), Self-Contained (автономный `.exe` со всеми зависимостями)
+* **Тип сборки**: Unpackaged (`<WindowsPackageType>None</WindowsPackageType>`), Self-Contained / Single-File (один автономный `.exe` со всеми зависимостями внутри, кроме папки `Assets` и ресурсов локализации для `en-US`, `ru-RU`, `de-DE`)
 * **Графика и рендеринг**: Microsoft.Graphics.Win2D версии `1.4.0` (аппаратное ускорение рендеринга аннотаций на холсте)
 * **Системный трей**: H.NotifyIcon.WinUI версии `2.4.1` (реализация значка в трее и контекстного меню)
 * **Инструменты сборки**: Microsoft.Windows.SDK.BuildTools `10.0.28000.1839`, Microsoft.Windows.SDK.BuildTools.WinApp `0.3.2`
@@ -156,11 +156,16 @@ foreach (var element in Session.Annotations) {
     ```bash
     dotnet run --project Screentation/Screentation.csproj
     ```
-  * Сборка и публикация автономного (Self-Contained) релиза:
+  * Сборка и публикация автономного (Self-Contained / Single-File) релиза:
     ```bash
     dotnet publish Screentation/Screentation.csproj -c Release -r win-x64 --self-contained true
     ```
     *Результат сборки будет помещен в:* `Screentation/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/`
+    *Содержимое директории:*
+    - `Screentation.exe` (все библиотеки, включая рантайм .NET 10 и WinUI 3, упакованы в один файл размером ~300 МБ)
+    - `Screentation.pdb` (файл отладочных символов)
+    - `Assets/` (графические ресурсы и иконки, скопированные автоматически с помощью кастомного MSBuild-таргета `CopyAssetsToPublish`)
+    - *Папки локализации отсутствуют*, так как в проекте прописан ограничитель `<SatelliteResourceLanguages>en-US;ru-RU;de-DE</SatelliteResourceLanguages>`. Все используемые языковые ресурсы упакованы непосредственно внутрь `.exe`.
 
 ---
 

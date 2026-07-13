@@ -109,7 +109,11 @@ Launching the application:
 dotnet run
 ```
 
-Publishing (output release without dependencies):
+Publishing (fully autonomous single-file release):
 ```bash
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
+The result will be saved in `Screentation/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/` and consists of:
+- **`Screentation.exe`** (a single ~300 MB executable containing the .NET 10.0 Runtime, Windows App SDK, and all dependency DLLs)
+- **`Assets/`** (folder containing icons and logos)
+- **`Screentation.pdb`** (debug symbols, optional for distribution)
