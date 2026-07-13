@@ -34,6 +34,15 @@ Mit der Anwendung können Sie sofort Screenshots aus der Zwischenablage aufnehme
  - Fertige Schnellfarben verfügbar.
  - Die Schaltfläche **Farbe auswählen...** öffnet die Spektralpalette (ColorPicker) zur Auswahl eines beliebigen benutzerdefinierten Farbtons. Die ausgewählte Farbe bleibt zwischen Anwendungsneustarts erhalten.
 
+### Lokalisierung & System-Tray
+
+* **Unterstützte Sprachen**: Deutsch (`de-DE`), Englisch (`en-US`) und Russisch (`ru-RU`).
+  - Die Anwendung erkennt automatisch die Windows-Anzeigesprache (konfiguriert unter **Einstellungen -> Zeit und Sprache -> Sprache**) und lädt die entsprechende Übersetzung.
+* **Verhalten im System-Tray**:
+  - Das Schließen des Hauptfensters (über die Schaltfläche `X`) beendet die Anwendung nicht. Stattdessen wird sie im System-Tray ausgeblendet, um die Hintergrundüberwachung der Zwischenablage fortzusetzen.
+  - Um das Fenster wiederherzustellen, doppelklicken Sie auf das System-Tray-Symbol oder klicken Sie mit der rechten Maustaste auf das Symbol und wählen Sie **Screentation öffnen**.
+  - Um die Anwendung vollständig zu beenden, klicken Sie mit der rechten Maustaste auf das System-Tray-Symbol und wählen Sie **Beenden**.
+
 ### Tastaturkürzel
 | Schlüssel | Aktion |
 | :--- | :--- |

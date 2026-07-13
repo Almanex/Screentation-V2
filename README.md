@@ -34,6 +34,15 @@ The application allows you to instantly capture screenshots from the clipboard (
  - Ready-made quick colors available.
  - The **“Select color...”** button opens the spectral palette (ColorPicker) for selecting any custom shade. The selected color is retained between application restarts.
 
+### Localization & System Tray
+
+* **Supported Languages**: English (`en-US`), Russian (`ru-RU`), and German (`de-DE`). 
+  - The application automatically detects your Windows display language (configured in **Settings -> Time & Language -> Language**) and loads the corresponding interface strings.
+* **System Tray Behavior**:
+  - Closing the main window (using the `X` button) does not terminate the application. Instead, it hides it to the system tray to continue background clipboard monitoring.
+  - To restore the window, double-click the system tray icon, or right-click the icon and choose **Open Screentation**.
+  - To completely close the application, right-click the system tray icon and choose **Exit**.
+
 ### Keyboard Shortcuts
 | Key | Action |
 | :--- | :--- |
