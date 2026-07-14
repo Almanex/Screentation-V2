@@ -1,135 +1,96 @@
-[ English ](README.md) • [ Русский ](README_RU.md) • [ Deutsch ](README_DE.md)
-
 # Screentation
 
-**Screentation** is a native Windows application for quickly creating, editing and annotating screenshots. Written in C# using the modern interface **WinUI 3 (Windows App SDK)** and the graphics library **Win2D** for hardware rendering.
+*A professional screenshot capture, annotation, and step-sequencing desktop application for Windows.*
 
-The application allows you to instantly capture screenshots from the clipboard (including in a minimized state), apply arrows, frames, text on top of them, blur sensitive data, crop images and automatically number instruction steps (both in numbers and in Latin letters).
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-lightgrey.svg)]()
+[![Framework: .NET 10.0](https://img.shields.io/badge/Framework-.NET%2010.0-blueviolet.svg)]()
+[![UI: WinUI 3](https://img.shields.io/badge/UI-WinUI%203-blue.svg)]()
+[![Share](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FAlmanex%2FScreentation-V2)](https://twitter.com/intent/tweet?text=Check%20out%20Screentation%20-%20a%20native%20Windows%20screenshot%20annotation%20tool%20built%20with%20WinUI3%20and%20Win2D!&url=https%3A%2F%2Fgithub.com%2FAlmanex%2FScreentation-V2)
 
----
+Screentation is a native Windows application for quickly creating, editing, and annotating screenshots. It is written in C# using WinUI 3 (Windows App SDK) and the Win2D graphics library for hardware-accelerated rendering.
 
-<p align="center">
-  <img src="screenshots/screentation_01.png" alt="Screentation Canvas" width="49%" />
-  <img src="screenshots/screentation_02.png" alt="Screentation Editor" width="49%" />
-</p>
+The application allows you to instantly import screenshots from the clipboard (including when minimized to the system tray), apply arrows, frames, or text on top of them, blur sensitive data, crop images, and automatically number instruction steps using both numbers and Latin letters.
 
----
-
-## User Guide
-
-### Key Features
-1. **Automatic Capture**: When the application is open or simply minimized to tray, when you click `PrintScreen` (or take a photo using Windows Snipping Tool), the screenshot is automatically added to the list on the left.
-2. **Annotation Tools**:
- - **Select**: Select, move and resize applied elements.
- - **Frame (Rect)**: Creates rectangular areas (optional with translucent fill).
- - **Arrow**: Create directional arrows.
- - **Blur**: Gaussian blur effect to hide sensitive information.
- - **Eraser**: Copy and transfer texture (clone area) to hide interface elements.
- - **Text**: Enter custom text on the canvas with the ability to change font size and color.
- - **Step**: Automatic sequence of steps.
-3. **Smart Crop**:
- - Allows you to crop the screenshot to any rectangular area.
- - When cropping is confirmed, all previously drawn elements are shifted to the corresponding vector, remaining exactly in their places relative to the cropped frame.
-4. **Zoom & Pan**:
- - Scaling is performed by holding the **`Ctrl` key + mouse wheel** (focuses on the cursor) or by dragging the **scaling slider** in the right panel.
- - Moving around the enlarged canvas is done by **holding the middle mouse button (wheel)** and dragging.
- - The **“Reset”** button returns the scale to the “fit to window” mode.
-5. **Numbering of steps**:
- - Supports 3 formats: Numbers (`1, 2, 3...`), Latin capital letters (`A, B... Z, AA...`), Latin small letters (`a, b... z, aa...`).
- - The “Next step” field allows you to set the starting number or change the current index.
-6. **Color selection**:
- - Ready-made quick colors available.
- - The **“Select color...”** button opens the spectral palette (ColorPicker) for selecting any custom shade. The selected color is retained between application restarts.
-
-### Localization & System Tray
-
-* **Supported Languages**: English (`en-US`), Russian (`ru-RU`), and German (`de-DE`). 
-  - The application automatically detects your Windows display language (configured in **Settings -> Time & Language -> Language**) and loads the corresponding interface strings.
-* **System Tray Behavior**:
-  - Closing the main window (using the `X` button) does not terminate the application. Instead, it hides it to the system tray to continue background clipboard monitoring.
-  - To restore the window, double-click the system tray icon, or right-click the icon and choose **Open Screentation**.
-  - To completely close the application, right-click the system tray icon and choose **Exit**.
-
-### Keyboard Shortcuts
-| Key | Action |
-| :--- | :--- |
-| `Ctrl + V` | Paste screenshot from clipboard manually |
-| `Ctrl + Z` | Undo last action (Undo) |
-| `Ctrl + Y` / `Ctrl + Shift + Z` | Redo a undone action (Redo) |
-| `Ctrl + S` | Save active screenshot to disk |
-| `Ctrl + Shift + S` | Save all screenshots (batch saving) |
-| `Delete` / `Backspace` | Delete selected annotation element |
-| `Escape` | Exit current mode / reset selection |
-| `Enter` *(in frame mode)* | Apply crop |
-| `Escape` *(in frame mode)* | Undo crop |
-| `1`, `2`, `3`, `4`, `5` | Quick selection of tools: Frame, Step, Arrow, Blur, Stamp |
+For detailed usage instructions, please refer to the [User Guide](docs/GUIDE.md).
 
 ---
 
-## Developer Guide
+## Key Features
 
-### Technology stack
-* **Platform**: .NET 10.0, Windows 10/11
-* **UI Framework**: WinUI 3 (Windows App SDK 2.2.0)
-* **Graphics**: Win2D (Microsoft.Graphics.Win2D 1.4.0) hardware 2D rendering based on Direct2D
-* **System integration**: Subclassing windows (Comctl32) to intercept Win32 clipboard events
-
-### Project structure
-```
-Screentation/
-├── Assets/                    # Иконки, заставки и графические ресурсы
-├── Properties/                # Параметры запуска (launchSettings.json)
-├── Models.cs                  # Модели данных (ScreenshotSession, AnnotationElement, etc.)
-├── AnnotationCanvas.cs        # Интерактивный холст (обработка мыши, отрисовка, логика инструментов)
-├── AnnotationDrawer.cs        # Рендеринг фигур и текста на холсте через Win2D
-├── ClipboardMonitor.cs        # Фоновый Win32-мониторинг буфера обмена (WM_CLIPBOARDUPDATE)
-├── HistoryManager.cs          # Стек отмены/повтора действий (Undo/Redo)
-├── SettingsManager.cs         # Чтение и запись конфигурации пользователя (JSON)
-├── ExportManager.cs           # Экспорт скриншотов в форматы PNG, JPEG, WebP
-├── MainPage.xaml / .cs        # Основной экран интерфейса (панель инструментов, настройки)
-├── MainWindow.xaml / .cs      # Корневое окно приложения и интеграция с треем
-└── Screentation.csproj        # Файл конфигурации проекта
-```
-
-### Key Component Architecture
-
-#### 1. Background clipboard interception (`ClipboardMonitor.cs`)
-To reliably intercept screenshots in a minimized state, the Win32 function `AddClipboardFormatListener` is used, which registers the application window in the clipboard listening chain. When data changes, the window receives the `WM_CLIPBOARDUPDATE` system message.
-* **Lock protection**: Because the snapshot source (eg Windows Clipboard) locks the buffer while it is being written, it pauses for 100 ms before reading the data and starts a cycle of 10 access attempts (`OpenClipboard`).
-* **Deduplication**: Windows sends multiple updates in a row for different formats of the same data. To prevent duplicates, the DIB image header is read, reference pixels are calculated and checked against the previous image. If the content is identical and received within 2 seconds of the previous snapshot, it is cut off as a system duplicate.
-
-#### 2. Interactive canvas (`AnnotationCanvas.cs`)
-Inherits from `Grid` and contains `CanvasControl` (Win2D). 
-* **Grid**: All annotation coordinates are stored in the original screenshot resolution. When rendering, a transformation matrix is ​​applied to the Win2D context (`Matrix3x2.CreateScale(_scale) * Matrix3x2.CreateTranslation(_offsetX, _offsetY)`), due to which all shapes are scaled and moved smoothly and without loss of clarity.
-* **Text editor**: When placing text on the canvas, the standard `TextBox` control is dynamically projected with the `Loaded` focus property enabled and aligned to the top-left edge of the canvas. Losing focus or pressing `Enter` bakes the text into a vector `TextElement`.
-
-#### 3. Rendering shapes (`AnnotationDrawer.cs`)
-Static class that performs low-level drawing of vector primitives on the `CanvasDrawingSession`. Blurring is implemented using the `GaussianBlurEffect` effect based on the original `CanvasBitmap` texture cache.
+* **Automatic Capture**: Background clipboard monitoring (even when minimized to tray) automatically imports screenshots when PrintScreen is pressed.
+* **Markup Tools**: Frames (with/without fills), directional arrows, Gaussian blur for sensitive details, clone stamp (Eraser), and text blocks.
+* **Auto-sequenced Steps**: Auto-incremented step markers supporting numeric and alphabetical formats.
+* **Smart Crop**: Image cropping with automatic shifting and coordinate recalculation for all previously drawn annotation elements.
+* **Localization**: Fully localized user interface in three languages (English, Russian, German) with automatic system display language detection.
 
 ---
 
-## ️ Build & Run
+## Tech Stack
 
-### Requirements
+| Layer / Component | Technology | Details / Purpose |
+| --- | --- | --- |
+| Platform | .NET 10.0 | net10.0-windows target framework |
+| UI Framework | WinUI 3 | Windows App SDK (v2.2.0) |
+| Graphics Rendering | Win2D | Hardware-accelerated 2D drawing (v1.4.0) |
+| System Tray | Win32 API | Native Shell_NotifyIcon & subclassed WNDPROC |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
 * OS: Windows 10 (version 1809 / build 17763) or newer.
-* Visual Studio 2022 with **Application development for the Windows platform (UWP/WinUI)** or .NET 10 SDK installed.
+* SDK: Visual Studio 2022 with **Windows application development (UWP/WinUI)** workload, or .NET 10.0 SDK.
 
-###Build commands in the CLI
+### Installation & Running
+
 Build the project:
 ```bash
 dotnet build
 ```
 
-Launching the application:
+Run the application:
 ```bash
 dotnet run
 ```
 
-Publishing (fully autonomous single-file release):
+---
+
+## Running the Tests
+
+To verify code correctness, compile the solution in Debug mode to check for any warnings or compilation errors:
+```bash
+dotnet build -c Debug
+```
+
+---
+
+## Deployment
+
+Publish a standalone release (Single-File / Self-Contained):
 ```bash
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
-The result will be saved in `Screentation/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/` and consists of:
-- **`Screentation.exe`** (a single ~300 MB executable containing the .NET 10.0 Runtime, Windows App SDK, and all dependency DLLs)
-- **`Assets/`** (folder containing icons and logos)
-- **`Screentation.pdb`** (debug symbols, optional for distribution)
+The published files will be saved in `publish/` and consist of:
+* `Screentation.exe` (a single ~300 MB standalone executable containing the .NET Runtime, Windows App SDK, and all dependency DLLs).
+* `Assets/` (folder containing icons and assets).
+
+### Windows Defender SmartScreen Warning
+Because the application executable is unsigned, Windows Defender SmartScreen may display a warning when launched for the first time.
+To run the application:
+1. Click the **More info** link.
+2. Click the **Run anyway** button.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any suggestions or improvements.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
