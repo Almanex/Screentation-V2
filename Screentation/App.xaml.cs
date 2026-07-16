@@ -21,6 +21,28 @@ public partial class App : Application
     
     public App()
     {
+        try
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            for (int i = 0; i < args.Length - 1; i++)
+            {
+                if (args[i].Equals("--lang", StringComparison.OrdinalIgnoreCase))
+                {
+                    string lang = args[i + 1];
+                    if (lang.Equals("ru", StringComparison.OrdinalIgnoreCase)) lang = "ru-RU";
+                    else if (lang.Equals("en", StringComparison.OrdinalIgnoreCase)) lang = "en-US";
+                    else if (lang.Equals("de", StringComparison.OrdinalIgnoreCase)) lang = "de-DE";
+
+                    Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = lang;
+                    break;
+                }
+            }
+        }
+        catch
+        {
+            // Ignore failure in parsing args
+        }
+
         InitializeComponent();
         
         // Hook unhandled exceptions
