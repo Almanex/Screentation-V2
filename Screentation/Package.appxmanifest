@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
@@ -8,10 +8,18 @@
   xmlns:systemai="http://schemas.microsoft.com/appx/manifest/systemai/windows10"
   IgnorableNamespaces="uap rescap systemai">
 
+  <!-- 
+    IMPORTANT: The values below are placeholders. 
+    When publishing to the Microsoft Store, you MUST replace them with the actual values 
+    provided by Microsoft Partner Center for your registered app:
+    - Name: The Package Name (e.g. 56833Almanex.Screentation)
+    - Publisher: The Publisher Identity Common Name (e.g. CN=12345678-ABCD-EF01-2345-6789ABCDEF01)
+    - PublisherDisplayName: Your developer display name (e.g. Almanex)
+  -->
   <Identity
     Name="56833F64-C92E-4FEA-A381-804657A2C680"
     Publisher="CN=AppPublisher"
-    Version="1.0.0.0" />
+    Version="2.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="56833F64-C92E-4FEA-A381-804657A2C680" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -27,7 +35,9 @@
   </Dependencies>
 
   <Resources>
-    <Resource Language="x-generate"/>
+    <Resource Language="en-US"/>
+    <Resource Language="ru-RU"/>
+    <Resource Language="de-DE"/>
   </Resources>
 
   <Applications>
@@ -47,7 +57,7 @@
   </Applications>
 
   <Capabilities>
+    <!-- Full Trust capability is required for desktop API access (Win32 APIs, file I/O, clipboard) -->
     <rescap:Capability Name="runFullTrust" />
-    <systemai:Capability Name="systemAIModels"/>
   </Capabilities>
 </Package>

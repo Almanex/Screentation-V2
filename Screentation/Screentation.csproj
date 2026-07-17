@@ -12,12 +12,19 @@
     <UseWinUI>true</UseWinUI>
     <WinUISDKReferences>false</WinUISDKReferences>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <WindowsPackageType>None</WindowsPackageType>
-    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <PublishPackaged Condition="'$(ActiveDebugProfile)' == 'Screentation (Package)'">true</PublishPackaged>
+    <WindowsPackageType Condition="'$(PublishPackaged)' == 'true'">MSIX</WindowsPackageType>
+    <WindowsPackageType Condition="'$(PublishPackaged)' != 'true'">None</WindowsPackageType>
+    <WindowsAppSDKSelfContained Condition="'$(PublishPackaged)' == 'true'">false</WindowsAppSDKSelfContained>
+    <WindowsAppSDKSelfContained Condition="'$(PublishPackaged)' != 'true'">true</WindowsAppSDKSelfContained>
+    <PackageCertificateKeyFile Condition="'$(PublishPackaged)' == 'true'">Screentation_TestKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificatePassword Condition="'$(PublishPackaged)' == 'true'">1</PackageCertificatePassword>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <SatelliteResourceLanguages>en-US;ru-RU;de-DE</SatelliteResourceLanguages>
+    <DisableXAMLGeneratedMain>true</DisableXAMLGeneratedMain>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -67,12 +74,14 @@
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">False</PublishTrimmed>
-    <PublishSingleFile Condition="'$(Configuration)' != 'Debug'">True</PublishSingleFile>
-    <SelfContained Condition="'$(Configuration)' != 'Debug'">True</SelfContained>
+    <PublishSingleFile Condition="'$(Configuration)' != 'Debug' and '$(PublishPackaged)' != 'true'">True</PublishSingleFile>
+    <PublishSingleFile Condition="'$(PublishPackaged)' == 'true'">False</PublishSingleFile>
+    <SelfContained Condition="'$(Configuration)' != 'Debug' and '$(PublishPackaged)' != 'true'">True</SelfContained>
+    <SelfContained Condition="'$(PublishPackaged)' == 'true'">False</SelfContained>
   </PropertyGroup>
 
   <!-- Custom target to copy Assets folder next to the single-file executable in the publish folder -->
-  <Target Name="CopyAssetsToPublish" AfterTargets="Publish">
+  <Target Name="CopyAssetsToPublish" AfterTargets="Publish" Condition="'$(WindowsPackageType)' == 'None'">
     <ItemGroup>
       <AssetFiles Include="Assets\**\*" />
     </ItemGroup>
