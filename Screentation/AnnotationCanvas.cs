@@ -44,6 +44,10 @@ public class AnnotationCanvas : Grid
     // Interactive Crop tool state
     private Rect _cropRectOriginal;
 
+    // Interactive Slice Cut tool state
+    private Rect _sliceCutRectOriginal;
+    public bool IsSliceCutHorizontal { get; set; } = true;
+
     // Interaction states
     private bool _isDrawing = false;
     private bool _isMoving = false;
@@ -265,6 +269,10 @@ public class AnnotationCanvas : Grid
         {
             canvas._cropRectOriginal = new Rect(0, 0, canvas._cachedBitmap.Size.Width, canvas._cachedBitmap.Size.Height);
         }
+        else if (newTool == AnnotationType.SliceCut)
+        {
+            canvas._sliceCutRectOriginal = new Rect(0, 0, 0, 0);
+        }
 
         canvas._canvas.Invalidate();
     }
@@ -341,6 +349,25 @@ public class AnnotationCanvas : Grid
         foreach (var element in Session.Annotations)
         {
             AnnotationDrawer.DrawElement(sender, ds, element, _cachedBitmap);
+        }
+
+        if (ActiveTool == AnnotationType.SliceCut && (_sliceCutRectOriginal.Width > 0 || _sliceCutRectOriginal.Height > 0))
+        {
+            Rect band;
+            if (IsSliceCutHorizontal)
+            {
+                band = new Rect(0, _sliceCutRectOriginal.Y, imgWidth, _sliceCutRectOriginal.Height);
+                ds.FillRectangle(band, Color.FromArgb(120, 255, 0, 0));
+                ds.DrawLine(new Vector2(0, (float)band.Top), new Vector2(imgWidth, (float)band.Top), Microsoft.UI.Colors.Red, 2.0f);
+                ds.DrawLine(new Vector2(0, (float)band.Bottom), new Vector2(imgWidth, (float)band.Bottom), Microsoft.UI.Colors.Red, 2.0f);
+            }
+            else
+            {
+                band = new Rect(_sliceCutRectOriginal.X, 0, _sliceCutRectOriginal.Width, imgHeight);
+                ds.FillRectangle(band, Color.FromArgb(120, 255, 0, 0));
+                ds.DrawLine(new Vector2((float)band.Left, 0), new Vector2((float)band.Left, imgHeight), Microsoft.UI.Colors.Red, 2.0f);
+                ds.DrawLine(new Vector2((float)band.Right, 0), new Vector2((float)band.Right, imgHeight), Microsoft.UI.Colors.Red, 2.0f);
+            }
         }
 
         // Restore screen coordinates to draw selection outlines and handles
@@ -496,6 +523,16 @@ public class AnnotationCanvas : Grid
                 return;
             }
             
+            e.Handled = true;
+            return;
+        }
+
+        // 1.5. Handle Slice Cut Tool interaction
+        if (ActiveTool == AnnotationType.SliceCut)
+        {
+            _isDrawing = true;
+            _sliceCutRectOriginal = new Rect(origPt.X, origPt.Y, 0, 0);
+            _canvas.CapturePointer(e.Pointer);
             e.Handled = true;
             return;
         }
@@ -698,6 +735,14 @@ public class AnnotationCanvas : Grid
                     NextStepValue = val + 1;
                     _isDrawing = false;
                     break;
+                case AnnotationType.Highlighter:
+                    newEl = new HighlighterElement
+                    {
+                        Bounds = new Rect(origPt.X, origPt.Y, 0, 0),
+                        Color = ActiveColor,
+                        Opacity = 0.4f
+                    };
+                    break;
             }
 
             if (newEl != null)
@@ -761,6 +806,16 @@ public class AnnotationCanvas : Grid
             return;
         }
 
+        if (ActiveTool == AnnotationType.SliceCut)
+        {
+            if (_isDrawing)
+            {
+                _sliceCutRectOriginal = CalculateNewBounds(_startOriginalPoint, origPt);
+                _canvas.Invalidate();
+            }
+            return;
+        }
+
         if (_isDrawing && SelectedElement != null)
         {
             switch (SelectedElement)
@@ -776,6 +831,9 @@ public class AnnotationCanvas : Grid
                     break;
                 case EraserElement eraserEl:
                     eraserEl.Bounds = CalculateNewBounds(_startOriginalPoint, origPt);
+                    break;
+                case HighlighterElement highEl:
+                    highEl.Bounds = CalculateNewBounds(_startOriginalPoint, origPt);
                     break;
             }
             _canvas.Invalidate();
@@ -814,6 +872,14 @@ public class AnnotationCanvas : Grid
             _isDrawing = false;
             _isMoving = false;
             _isResizing = false;
+            _canvas.ReleasePointerCapture(e.Pointer);
+            _canvas.Invalidate();
+            return;
+        }
+
+        if (ActiveTool == AnnotationType.SliceCut)
+        {
+            _isDrawing = false;
             _canvas.ReleasePointerCapture(e.Pointer);
             _canvas.Invalidate();
             return;
@@ -893,6 +959,11 @@ public class AnnotationCanvas : Grid
         _isPanning = false;
         _canvas.Invalidate();
         ZoomChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void InvalidateCanvas()
+    {
+        _canvas.Invalidate();
     }
 
     private void OnCanvasPointerWheelChanged(object sender, PointerRoutedEventArgs e)
@@ -1177,6 +1248,288 @@ public class AnnotationCanvas : Grid
         {
             System.Diagnostics.Debug.WriteLine($"Crop error: {ex.Message}");
         }
+    }
+
+    public void ApplySliceCut()
+    {
+        if (Session == null || _cachedBitmap == null) return;
+
+        Rect cutRect = _sliceCutRectOriginal;
+        int imgWidth = (int)_cachedBitmap.Size.Width;
+        int imgHeight = (int)_cachedBitmap.Size.Height;
+
+        if (IsSliceCutHorizontal)
+        {
+            int minY = (int)Math.Max(0, Math.Min(cutRect.Top, imgHeight));
+            int maxY = (int)Math.Max(0, Math.Min(cutRect.Bottom, imgHeight));
+            int cutHeight = maxY - minY;
+
+            if (cutHeight <= 0 || cutHeight >= imgHeight)
+            {
+                ActiveTool = AnnotationType.Select;
+                return;
+            }
+
+            int newHeight = imgHeight - cutHeight;
+
+            try
+            {
+                Session.History.SaveState();
+
+                var device = CanvasDevice.GetSharedDevice();
+                SoftwareBitmap stitchedBitmap;
+
+                using (var canvasBitmap = CanvasBitmap.CreateFromSoftwareBitmap(device, Session.OriginalBitmap))
+                using (var renderTarget = new CanvasRenderTarget(device, imgWidth, newHeight, canvasBitmap.Dpi))
+                {
+                    using (var ds = renderTarget.CreateDrawingSession())
+                    {
+                        ds.Clear(Microsoft.UI.Colors.Transparent);
+                        
+                        // Top part
+                        if (minY > 0)
+                        {
+                            Rect srcTop = new Rect(0, 0, imgWidth, minY);
+                            Rect destTop = new Rect(0, 0, imgWidth, minY);
+                            ds.DrawImage(canvasBitmap, destTop, srcTop);
+                        }
+
+                        // Bottom part
+                        int bottomHeight = imgHeight - maxY;
+                        if (bottomHeight > 0)
+                        {
+                            Rect srcBottom = new Rect(0, maxY, imgWidth, bottomHeight);
+                            Rect destBottom = new Rect(0, minY, imgWidth, bottomHeight);
+                            ds.DrawImage(canvasBitmap, destBottom, srcBottom);
+                        }
+                    }
+
+                    byte[] bytes = renderTarget.GetPixelBytes();
+                    stitchedBitmap = new SoftwareBitmap(BitmapPixelFormat.Bgra8, imgWidth, newHeight, BitmapAlphaMode.Premultiplied);
+                    stitchedBitmap.CopyFromBuffer(System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeBufferExtensions.AsBuffer(bytes));
+                }
+
+                Session.OriginalBitmap.Dispose();
+                Session.OriginalBitmap = stitchedBitmap;
+
+                // Shift and clean annotations
+                List<AnnotationElement> toRemove = new();
+                foreach (var element in Session.Annotations)
+                {
+                    switch (element)
+                    {
+                        case RectElement r:
+                            float newTop = ShiftY((float)r.Bounds.Top, minY, maxY, cutHeight);
+                            float newBottom = ShiftY((float)r.Bounds.Bottom, minY, maxY, cutHeight);
+                            r.Bounds = new Rect(r.Bounds.X, newTop, r.Bounds.Width, Math.Max(0, newBottom - newTop));
+                            if (r.Bounds.Height <= 2) toRemove.Add(r);
+                            break;
+
+                        case BlurElement b:
+                            float bTop = ShiftY((float)b.Bounds.Top, minY, maxY, cutHeight);
+                            float bBottom = ShiftY((float)b.Bounds.Bottom, minY, maxY, cutHeight);
+                            b.Bounds = new Rect(b.Bounds.X, bTop, b.Bounds.Width, Math.Max(0, bBottom - bTop));
+                            if (b.Bounds.Height <= 2) toRemove.Add(b);
+                            break;
+
+                        case EraserElement er:
+                            float erTop = ShiftY((float)er.Bounds.Top, minY, maxY, cutHeight);
+                            float erBottom = ShiftY((float)er.Bounds.Bottom, minY, maxY, cutHeight);
+                            er.Bounds = new Rect(er.Bounds.X, erTop, er.Bounds.Width, Math.Max(0, erBottom - erTop));
+                            float srcTop = ShiftY((float)er.SourceBounds.Top, minY, maxY, cutHeight);
+                            float srcBottom = ShiftY((float)er.SourceBounds.Bottom, minY, maxY, cutHeight);
+                            er.SourceBounds = new Rect(er.SourceBounds.X, srcTop, er.SourceBounds.Width, Math.Max(0, srcBottom - srcTop));
+                            if (er.Bounds.Height <= 2 || er.SourceBounds.Height <= 2) toRemove.Add(er);
+                            break;
+
+                        case HighlighterElement h:
+                            float hTop = ShiftY((float)h.Bounds.Top, minY, maxY, cutHeight);
+                            float hBottom = ShiftY((float)h.Bounds.Bottom, minY, maxY, cutHeight);
+                            h.Bounds = new Rect(h.Bounds.X, hTop, h.Bounds.Width, Math.Max(0, hBottom - hTop));
+                            if (h.Bounds.Height <= 2) toRemove.Add(h);
+                            break;
+
+                        case StepElement s:
+                            s.Center = new Vector2(s.Center.X, ShiftY(s.Center.Y, minY, maxY, cutHeight));
+                            if (s.Center.Y >= minY && s.Center.Y <= maxY) toRemove.Add(s);
+                            break;
+
+                        case ArrowElement a:
+                            a.Start = new Vector2(a.Start.X, ShiftY(a.Start.Y, minY, maxY, cutHeight));
+                            a.End = new Vector2(a.End.X, ShiftY(a.End.Y, minY, maxY, cutHeight));
+                            if (Vector2.Distance(a.Start, a.End) <= 2) toRemove.Add(a);
+                            break;
+
+                        case TextElement t:
+                            t.Position = new Vector2(t.Position.X, ShiftY(t.Position.Y, minY, maxY, cutHeight));
+                            break;
+                    }
+                }
+
+                foreach (var el in toRemove)
+                {
+                    Session.Annotations.Remove(el);
+                }
+
+                _userZoomedOrPanned = false;
+                _cachedBitmap?.Dispose();
+                _cachedBitmap = null;
+
+                UpdateSessionThumbnailAsync(Session);
+
+                ActiveTool = AnnotationType.Select;
+                Session.History.SaveState();
+                _canvas.Invalidate();
+                ZoomChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Slice cut error: {ex.Message}");
+            }
+        }
+        else
+        {
+            int minX = (int)Math.Max(0, Math.Min(cutRect.Left, imgWidth));
+            int maxX = (int)Math.Max(0, Math.Min(cutRect.Right, imgWidth));
+            int cutWidth = maxX - minX;
+
+            if (cutWidth <= 0 || cutWidth >= imgWidth)
+            {
+                ActiveTool = AnnotationType.Select;
+                return;
+            }
+
+            int newWidth = imgWidth - cutWidth;
+
+            try
+            {
+                Session.History.SaveState();
+
+                var device = CanvasDevice.GetSharedDevice();
+                SoftwareBitmap stitchedBitmap;
+
+                using (var canvasBitmap = CanvasBitmap.CreateFromSoftwareBitmap(device, Session.OriginalBitmap))
+                using (var renderTarget = new CanvasRenderTarget(device, newWidth, imgHeight, canvasBitmap.Dpi))
+                {
+                    using (var ds = renderTarget.CreateDrawingSession())
+                    {
+                        ds.Clear(Microsoft.UI.Colors.Transparent);
+                        
+                        // Left part
+                        if (minX > 0)
+                        {
+                            Rect srcLeft = new Rect(0, 0, minX, imgHeight);
+                            Rect destLeft = new Rect(0, 0, minX, imgHeight);
+                            ds.DrawImage(canvasBitmap, destLeft, srcLeft);
+                        }
+
+                        // Right part
+                        int rightWidth = imgWidth - maxX;
+                        if (rightWidth > 0)
+                        {
+                            Rect srcRight = new Rect(maxX, 0, rightWidth, imgHeight);
+                            Rect destRight = new Rect(minX, 0, rightWidth, imgHeight);
+                            ds.DrawImage(canvasBitmap, destRight, srcRight);
+                        }
+                    }
+
+                    byte[] bytes = renderTarget.GetPixelBytes();
+                    stitchedBitmap = new SoftwareBitmap(BitmapPixelFormat.Bgra8, newWidth, imgHeight, BitmapAlphaMode.Premultiplied);
+                    stitchedBitmap.CopyFromBuffer(System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeBufferExtensions.AsBuffer(bytes));
+                }
+
+                Session.OriginalBitmap.Dispose();
+                Session.OriginalBitmap = stitchedBitmap;
+
+                // Shift and clean annotations
+                List<AnnotationElement> toRemove = new();
+                foreach (var element in Session.Annotations)
+                {
+                    switch (element)
+                    {
+                        case RectElement r:
+                            float newLeft = ShiftX((float)r.Bounds.Left, minX, maxX, cutWidth);
+                            float newRight = ShiftX((float)r.Bounds.Right, minX, maxX, cutWidth);
+                            r.Bounds = new Rect(newLeft, r.Bounds.Y, Math.Max(0, newRight - newLeft), r.Bounds.Height);
+                            if (r.Bounds.Width <= 2) toRemove.Add(r);
+                            break;
+
+                        case BlurElement b:
+                            float bLeft = ShiftX((float)b.Bounds.Left, minX, maxX, cutWidth);
+                            float bRight = ShiftX((float)b.Bounds.Right, minX, maxX, cutWidth);
+                            b.Bounds = new Rect(bLeft, b.Bounds.Y, Math.Max(0, bRight - bLeft), b.Bounds.Height);
+                            if (b.Bounds.Width <= 2) toRemove.Add(b);
+                            break;
+
+                        case EraserElement er:
+                            float erLeft = ShiftX((float)er.Bounds.Left, minX, maxX, cutWidth);
+                            float erRight = ShiftX((float)er.Bounds.Right, minX, maxX, cutWidth);
+                            er.Bounds = new Rect(erLeft, er.Bounds.Y, Math.Max(0, erRight - erLeft), er.Bounds.Height);
+                            float srcLeft = ShiftX((float)er.SourceBounds.Left, minX, maxX, cutWidth);
+                            float srcRight = ShiftX((float)er.SourceBounds.Right, minX, maxX, cutWidth);
+                            er.SourceBounds = new Rect(srcLeft, er.SourceBounds.Y, Math.Max(0, srcRight - srcLeft), er.SourceBounds.Height);
+                            if (er.Bounds.Width <= 2 || er.SourceBounds.Width <= 2) toRemove.Add(er);
+                            break;
+
+                        case HighlighterElement h:
+                            float hLeft = ShiftX((float)h.Bounds.Left, minX, maxX, cutWidth);
+                            float hRight = ShiftX((float)h.Bounds.Right, minX, maxX, cutWidth);
+                            h.Bounds = new Rect(hLeft, h.Bounds.Y, Math.Max(0, hRight - hLeft), h.Bounds.Height);
+                            if (h.Bounds.Width <= 2) toRemove.Add(h);
+                            break;
+
+                        case StepElement s:
+                            s.Center = new Vector2(ShiftX(s.Center.X, minX, maxX, cutWidth), s.Center.Y);
+                            if (s.Center.X >= minX && s.Center.X <= maxX) toRemove.Add(s);
+                            break;
+
+                        case ArrowElement a:
+                            a.Start = new Vector2(ShiftX(a.Start.X, minX, maxX, cutWidth), a.Start.Y);
+                            a.End = new Vector2(ShiftX(a.End.X, minX, maxX, cutWidth), a.End.Y);
+                            if (Vector2.Distance(a.Start, a.End) <= 2) toRemove.Add(a);
+                            break;
+
+                        case TextElement t:
+                            t.Position = new Vector2(ShiftX(t.Position.X, minX, maxX, cutWidth), t.Position.Y);
+                            break;
+                    }
+                }
+
+                foreach (var el in toRemove)
+                {
+                    Session.Annotations.Remove(el);
+                }
+
+                _userZoomedOrPanned = false;
+                _cachedBitmap?.Dispose();
+                _cachedBitmap = null;
+
+                UpdateSessionThumbnailAsync(Session);
+
+                ActiveTool = AnnotationType.Select;
+                Session.History.SaveState();
+                _canvas.Invalidate();
+                ZoomChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Slice cut error: {ex.Message}");
+            }
+        }
+    }
+
+    private float ShiftY(float y, float minY, float maxY, float cutHeight)
+    {
+        if (y > maxY) return y - cutHeight;
+        if (y < minY) return y;
+        return minY;
+    }
+
+    private float ShiftX(float x, float minX, float maxX, float cutWidth)
+    {
+        if (x > maxX) return x - cutWidth;
+        if (x < minX) return x;
+        return minX;
     }
 
     private async void UpdateSessionThumbnailAsync(ScreenshotSession session)

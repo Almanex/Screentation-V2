@@ -98,6 +98,19 @@
                     <Button x:Name="BtnCancelCrop" x:Uid="BtnCancelCrop" Click="BtnCancelCrop_Click" Content="Отмена (Esc)" Padding="12,6" FontSize="12" />
                 </StackPanel>
             </Border>
+
+            <!-- Slice Cut Confirmation Bar -->
+            <Border x:Name="BorderSliceCutActions" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,24" Padding="12,8" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Spacing="16">
+                    <TextBlock x:Uid="TextSliceCutMode" Text="Вырезка фрагмента" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="12" />
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <RadioButton x:Name="RadioSliceHorizontal" x:Uid="RadioSliceHorizontal" Content="По горизонтали" IsChecked="True" Checked="RadioSlice_Checked" FontSize="12" />
+                        <RadioButton x:Name="RadioSliceVertical" x:Uid="RadioSliceVertical" Content="По вертикали" Checked="RadioSlice_Checked" FontSize="12" />
+                    </StackPanel>
+                    <Button x:Name="BtnApplySliceCut" x:Uid="BtnApplySliceCut" Click="BtnApplySliceCut_Click" Content="Вырезать (Enter)" Style="{StaticResource AccentButtonStyle}" Padding="12,6" FontSize="12" />
+                    <Button x:Name="BtnCancelSliceCut" x:Uid="BtnCancelSliceCut" Click="BtnCancelSliceCut_Click" Content="Отмена (Esc)" Padding="12,6" FontSize="12" />
+                </StackPanel>
+            </Border>
         </Grid>
 
         <!-- Splitter Right -->
@@ -110,7 +123,7 @@
                 <StackPanel Spacing="8">
                     <TextBlock x:Uid="ToolsTitle" Text="Инструменты" FontWeight="SemiBold" Style="{StaticResource BodyStrongTextBlockStyle}" />
                     
-                    <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*,*" RowSpacing="8" ColumnSpacing="8">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*,*,*" RowSpacing="8" ColumnSpacing="8">
                         <ToggleButton x:Name="ToolBtnSelect" Grid.Row="0" Grid.Column="0" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Select">
                             <StackPanel Spacing="4" HorizontalAlignment="Center">
                                 <FontIcon Glyph="&#xEF20;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
@@ -157,6 +170,18 @@
                             <StackPanel Spacing="4" HorizontalAlignment="Center">
                                 <FontIcon Glyph="&#xE8B9;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
                                 <TextBlock x:Uid="ToolBtnCropText" Text="Кадр" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ToolBtnHighlighter" Grid.Row="2" Grid.Column="2" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="Highlighter">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xE76D;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock x:Uid="ToolBtnHighlighterText" Text="Маркер" FontSize="11" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ToolBtnSliceCut" Grid.Row="3" Grid.Column="0" Click="ToolBtn_Click" HorizontalAlignment="Stretch" Tag="SliceCut">
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xE8C6;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <TextBlock x:Uid="ToolBtnSliceCutText" Text="Вырезка" FontSize="11" />
                             </StackPanel>
                         </ToggleButton>
                     </Grid>

@@ -108,6 +108,18 @@ public static class AnnotationDrawer
                     ds.DrawImage(backgroundBitmap, eraserEl.Bounds, eraserEl.SourceBounds);
                 }
                 break;
+
+            case HighlighterElement highEl:
+                if (highEl.Bounds.Width > 0 && highEl.Bounds.Height > 0)
+                {
+                    var fillCol = Color.FromArgb((byte)(255 * highEl.Opacity), highEl.Color.R, highEl.Color.G, highEl.Color.B);
+                    ds.FillRectangle(highEl.Bounds, fillCol);
+                    if (highEl.IsSelected)
+                    {
+                        ds.DrawRectangle(highEl.Bounds, Microsoft.UI.Colors.LightSkyBlue, 1.0f);
+                    }
+                }
+                break;
         }
     }
 }

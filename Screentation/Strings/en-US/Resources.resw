@@ -219,4 +219,25 @@
     <value>Failed to perform batch save:
 {0}</value>
   </data>
+  <data name="ToolBtnHighlighterText.Text" xml:space="preserve">
+    <value>Highlight</value>
+  </data>
+  <data name="ToolBtnSliceCutText.Text" xml:space="preserve">
+    <value>Slice Cut</value>
+  </data>
+  <data name="TextSliceCutMode.Text" xml:space="preserve">
+    <value>Slice Cut Mode</value>
+  </data>
+  <data name="RadioSliceHorizontal.Content" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="RadioSliceVertical.Content" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="BtnApplySliceCut.Content" xml:space="preserve">
+    <value>Cut (Enter)</value>
+  </data>
+  <data name="BtnCancelSliceCut.Content" xml:space="preserve">
+    <value>Cancel (Esc)</value>
+  </data>
 </root>

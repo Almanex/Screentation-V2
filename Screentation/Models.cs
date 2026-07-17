@@ -18,7 +18,9 @@ public enum AnnotationType
     Blur,
     Eraser, // Clone Stamp
     Text,
-    Crop
+    Crop,
+    Highlighter,
+    SliceCut
 }
 
 public abstract class AnnotationElement
@@ -408,6 +410,71 @@ public class EraserElement : AnnotationElement
     public void MoveSourceOnly(Vector2 offset)
     {
         SourceOffset += offset;
+    }
+
+    public override void Resize(Vector2 delta, int handleIndex)
+    {
+        double left = Bounds.Left;
+        double right = Bounds.Right;
+        double top = Bounds.Top;
+        double bottom = Bounds.Bottom;
+
+        switch (handleIndex)
+        {
+            case 0: left += delta.X; top += delta.Y; break;
+            case 1: right += delta.X; top += delta.Y; break;
+            case 2: right += delta.X; bottom += delta.Y; break;
+            case 3: left += delta.X; bottom += delta.Y; break;
+            case 4: top += delta.Y; break;
+            case 5: right += delta.X; break;
+            case 6: bottom += delta.Y; break;
+            case 7: left += delta.X; break;
+        }
+
+        double x = Math.Min(left, right);
+        double y = Math.Min(top, bottom);
+        double w = Math.Abs(right - left);
+        double h = Math.Abs(bottom - top);
+
+        Bounds = new Rect(x, y, w, h);
+    }
+}
+
+public class HighlighterElement : AnnotationElement
+{
+    public Rect Bounds { get; set; }
+    public float Opacity { get; set; } = 0.4f;
+
+    public HighlighterElement()
+    {
+        Type = AnnotationType.Highlighter;
+        Color = Color.FromArgb(255, 255, 255, 0); // Default yellow
+    }
+
+    public override AnnotationElement Clone()
+    {
+        return new HighlighterElement
+        {
+            Id = this.Id,
+            Color = this.Color,
+            StrokeThickness = this.StrokeThickness,
+            Bounds = this.Bounds,
+            Opacity = this.Opacity,
+            IsSelected = this.IsSelected
+        };
+    }
+
+    public override bool HitTest(Vector2 point, float tolerance)
+    {
+        return point.X >= Bounds.Left - tolerance && point.X <= Bounds.Right + tolerance &&
+               point.Y >= Bounds.Top - tolerance && point.Y <= Bounds.Bottom + tolerance;
+    }
+
+    public override Rect GetBounds() => Bounds;
+
+    public override void Move(Vector2 offset)
+    {
+        Bounds = new Rect(Bounds.X + offset.X, Bounds.Y + offset.Y, Bounds.Width, Bounds.Height);
     }
 
     public override void Resize(Vector2 delta, int handleIndex)

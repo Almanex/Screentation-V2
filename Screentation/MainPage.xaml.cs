@@ -300,10 +300,13 @@ public sealed partial class MainPage : Page
         ToolBtnEraser.IsChecked = (tool == AnnotationType.Eraser);
         ToolBtnText.IsChecked = (tool == AnnotationType.Text);
         ToolBtnCrop.IsChecked = (tool == AnnotationType.Crop);
+        ToolBtnHighlighter.IsChecked = (tool == AnnotationType.Highlighter);
+        ToolBtnSliceCut.IsChecked = (tool == AnnotationType.SliceCut);
 
         PanelFontSize.Visibility = (tool == AnnotationType.Text) ? Visibility.Visible : Visibility.Collapsed;
         PanelStepSettings.Visibility = (tool == AnnotationType.Step) ? Visibility.Visible : Visibility.Collapsed;
         BorderCropActions.Visibility = (tool == AnnotationType.Crop) ? Visibility.Visible : Visibility.Collapsed;
+        BorderSliceCutActions.Visibility = (tool == AnnotationType.SliceCut) ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void BtnResetSteps_Click(object sender, RoutedEventArgs e)
@@ -469,6 +472,23 @@ public sealed partial class MainPage : Page
         SetTool(AnnotationType.Select);
     }
 
+    private void BtnApplySliceCut_Click(object sender, RoutedEventArgs e)
+    {
+        DrawingCanvas.ApplySliceCut();
+    }
+
+    private void BtnCancelSliceCut_Click(object sender, RoutedEventArgs e)
+    {
+        SetTool(AnnotationType.Select);
+    }
+
+    private void RadioSlice_Checked(object sender, RoutedEventArgs e)
+    {
+        if (!_isInitialized || DrawingCanvas == null) return;
+        DrawingCanvas.IsSliceCutHorizontal = RadioSliceHorizontal?.IsChecked ?? true;
+        DrawingCanvas.InvalidateCanvas();
+    }
+
     private void SliderZoom_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
     {
         if (!_isInitialized) return;
@@ -622,6 +642,10 @@ public sealed partial class MainPage : Page
                     if (DrawingCanvas.ActiveTool == AnnotationType.Crop)
                     {
                         DrawingCanvas.ApplyCrop();
+                    }
+                    else if (DrawingCanvas.ActiveTool == AnnotationType.SliceCut)
+                    {
+                        DrawingCanvas.ApplySliceCut();
                     }
                     break;
                 case VirtualKey.Escape:

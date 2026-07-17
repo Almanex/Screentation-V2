@@ -219,4 +219,25 @@
     <value>Не удалось выполнить пакетное сохранение:
 {0}</value>
   </data>
+  <data name="ToolBtnHighlighterText.Text" xml:space="preserve">
+    <value>Маркер</value>
+  </data>
+  <data name="ToolBtnSliceCutText.Text" xml:space="preserve">
+    <value>Вырезка</value>
+  </data>
+  <data name="TextSliceCutMode.Text" xml:space="preserve">
+    <value>Вырезка фрагмента</value>
+  </data>
+  <data name="RadioSliceHorizontal.Content" xml:space="preserve">
+    <value>По горизонтали</value>
+  </data>
+  <data name="RadioSliceVertical.Content" xml:space="preserve">
+    <value>По вертикали</value>
+  </data>
+  <data name="BtnApplySliceCut.Content" xml:space="preserve">
+    <value>Вырезать (Enter)</value>
+  </data>
+  <data name="BtnCancelSliceCut.Content" xml:space="preserve">
+    <value>Отмена (Esc)</value>
+  </data>
 </root>

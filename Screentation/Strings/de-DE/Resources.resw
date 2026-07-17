@@ -219,4 +219,25 @@
     <value>Fehler beim Ausführen der Stapelspeicherung:
 {0}</value>
   </data>
+  <data name="ToolBtnHighlighterText.Text" xml:space="preserve">
+    <value>Hervorheben</value>
+  </data>
+  <data name="ToolBtnSliceCutText.Text" xml:space="preserve">
+    <value>Schnitt</value>
+  </data>
+  <data name="TextSliceCutMode.Text" xml:space="preserve">
+    <value>Ausschnitt-Modus</value>
+  </data>
+  <data name="RadioSliceHorizontal.Content" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="RadioSliceVertical.Content" xml:space="preserve">
+    <value>Vertikal</value>
+  </data>
+  <data name="BtnApplySliceCut.Content" xml:space="preserve">
+    <value>Schneiden (Enter)</value>
+  </data>
+  <data name="BtnCancelSliceCut.Content" xml:space="preserve">
+    <value>Abbrechen (Esc)</value>
+  </data>
 </root>
