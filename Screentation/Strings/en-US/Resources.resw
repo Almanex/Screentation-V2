@@ -68,7 +68,7 @@
     <value>The list is empty. Copy a screenshot to the clipboard!</value>
   </data>
   <data name="FooterVersion.Text" xml:space="preserve">
-    <value>Screentation v1.0</value>
+    <value>Screentation v2.0.0</value>
   </data>
   <data name="TextCanvasPlaceholder.Text" xml:space="preserve">
     <value>Waiting for screenshot...</value>
@@ -239,5 +239,16 @@
   </data>
   <data name="BtnCancelSliceCut.Content" xml:space="preserve">
     <value>Cancel (Esc)</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>About Screentation</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>A utility for quick annotation, markup, and step-sequencing on screenshots.
+
+Note: Screenshots are created using Windows built-in tools (PrintScreen, Win+Shift+S) and automatically captured by the application from the clipboard.</value>
+  </data>
+  <data name="AboutClose" xml:space="preserve">
+    <value>Close</value>
   </data>
 </root>

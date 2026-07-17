@@ -68,7 +68,7 @@
     <value>Список пуст. Скопируйте скриншот в буфер обмена!</value>
   </data>
   <data name="FooterVersion.Text" xml:space="preserve">
-    <value>Screentation v1.0</value>
+    <value>Screentation v2.0.0</value>
   </data>
   <data name="TextCanvasPlaceholder.Text" xml:space="preserve">
     <value>Ожидание скриншота...</value>
@@ -239,5 +239,16 @@
   </data>
   <data name="BtnCancelSliceCut.Content" xml:space="preserve">
     <value>Отмена (Esc)</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>О программе Screentation</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>Утилита для быстрого комментирования, разметки и нумерации шагов на скриншотах.
+
+Примечание: Снимки экрана создаются встроенными средствами Windows (PrintScreen, Win+Shift+S), а затем автоматически перехватываются приложением из буфера обмена.</value>
+  </data>
+  <data name="AboutClose" xml:space="preserve">
+    <value>Закрыть</value>
   </data>
 </root>

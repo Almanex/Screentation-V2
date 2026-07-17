@@ -665,6 +665,32 @@ public sealed partial class MainPage : Page
             }
         }
     }
+
+    private async void BtnAbout_Click(object sender, RoutedEventArgs e)
+    {
+        var aboutDialog = new ContentDialog
+        {
+            Title = "Screentation",
+            Content = new StackPanel
+            {
+                Spacing = 12,
+                Children =
+                {
+                    new TextBlock { Text = "Screentation v2.0.0", FontWeight = Microsoft.UI.Text.FontWeights.Bold },
+                    new TextBlock { Text = _resourceLoader.GetString("AboutDescription"), TextWrapping = TextWrapping.Wrap },
+                    new HyperlinkButton
+                    {
+                        Content = "GitHub: Almanex/Screentation-V2",
+                        NavigateUri = new Uri("https://github.com/Almanex/Screentation-V2"),
+                        Padding = new Thickness(0)
+                    }
+                }
+            },
+            CloseButtonText = _resourceLoader.GetString("AboutClose"),
+            XamlRoot = this.Content.XamlRoot
+        };
+        await aboutDialog.ShowAsync();
+    }
 }
 
 public class ColorItem : System.ComponentModel.INotifyPropertyChanged

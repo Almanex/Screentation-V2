@@ -76,8 +76,13 @@
             <TextBlock x:Name="TextNoScreenshots" x:Uid="TextNoScreenshots" Grid.Row="1" Text="Список пуст. Скопируйте скриншот в буфер обмена!" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Padding="24" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
             <!-- Footer info -->
-            <StackPanel Grid.Row="2" Padding="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
-                <TextBlock x:Uid="FooterVersion" Text="Screentation v1.0" FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center" />
+            <StackPanel Grid.Row="2" Padding="12,8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="4">
+                <HyperlinkButton Click="BtnAbout_Click" Padding="4">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <FontIcon Glyph="&#xE946;" FontSize="11" FontFamily="{StaticResource SymbolThemeFontFamily}" VerticalAlignment="Center" />
+                        <TextBlock x:Uid="FooterVersion" Text="Screentation v2.0.0" FontSize="11" VerticalAlignment="Center" />
+                    </StackPanel>
+                </HyperlinkButton>
             </StackPanel>
         </Grid>
 

@@ -68,7 +68,7 @@
     <value>Die Liste ist leer. Kopieren Sie einen Screenshot in die Zwischenablage!</value>
   </data>
   <data name="FooterVersion.Text" xml:space="preserve">
-    <value>Screentation v1.0</value>
+    <value>Screentation v2.0.0</value>
   </data>
   <data name="TextCanvasPlaceholder.Text" xml:space="preserve">
     <value>Warten auf Screenshot...</value>
@@ -239,5 +239,16 @@
   </data>
   <data name="BtnCancelSliceCut.Content" xml:space="preserve">
     <value>Abbrechen (Esc)</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>Über Screentation</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>Ein Dienstprogramm zur schnellen Kommentierung, Markierung und Schrittnummerierung auf Screenshots.
+
+Hinweis: Screenshots werden mit Windows-Bordmitteln (PrintScreen, Win+Shift+S) erstellt und von der Anwendung automatisch aus der Zwischenablage erfasst.</value>
+  </data>
+  <data name="AboutClose" xml:space="preserve">
+    <value>Schließen</value>
   </data>
 </root>
