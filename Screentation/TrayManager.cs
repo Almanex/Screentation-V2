@@ -90,6 +90,9 @@ internal sealed class TrayManager : IDisposable
     private static extern IntPtr LoadImage(IntPtr hinst, string name, uint type, int cx, int cy, uint flags);
 
     [DllImport("user32.dll")]
+    private static extern int GetSystemMetrics(int smIndex);
+
+    [DllImport("user32.dll")]
     private static extern bool DestroyIcon(IntPtr hIcon);
 
     [DllImport("user32.dll")]
@@ -140,8 +143,10 @@ internal sealed class TrayManager : IDisposable
         if (string.IsNullOrEmpty(_labelOpen)) _labelOpen = "Open Screentation";
         if (string.IsNullOrEmpty(_labelExit)) _labelExit = "Exit";
 
-        // Load .ico file from disk
-        _hIcon = LoadImage(IntPtr.Zero, iconPath, IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);
+        // Load .ico file from disk with exact small icon metrics (high DPI aware)
+        int cx = GetSystemMetrics(49); // SM_CXSMICON
+        int cy = GetSystemMetrics(50); // SM_CYSMICON
+        _hIcon = LoadImage(IntPtr.Zero, iconPath, IMAGE_ICON, cx, cy, LR_LOADFROMFILE);
 
         // Subclass the window proc — the delegate MUST be kept in a field or GC
         // will collect the function pointer and the app will crash when Windows calls it.

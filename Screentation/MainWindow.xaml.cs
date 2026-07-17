@@ -51,6 +51,31 @@ public sealed partial class MainWindow : Window
             tooltip:  "Screentation",
             onOpen:   RestoreWindow,
             onExit:   ExitApplication);
+
+        _ = StartNamedPipeServerAsync();
+    }
+
+    private async System.Threading.Tasks.Task StartNamedPipeServerAsync()
+    {
+        while (true)
+        {
+            try
+            {
+                using var server = new System.IO.Pipes.NamedPipeServerStream("ScreentationSingleInstancePipe", System.IO.Pipes.PipeDirection.In, 1, System.IO.Pipes.PipeTransmissionMode.Byte, System.IO.Pipes.PipeOptions.Asynchronous);
+                await server.WaitForConnectionAsync();
+                
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    RestoreWindow();
+                });
+                
+                server.Disconnect();
+            }
+            catch (Exception)
+            {
+                await System.Threading.Tasks.Task.Delay(1000);
+            }
+        }
     }
 
     private void AppWindow_Closing(
