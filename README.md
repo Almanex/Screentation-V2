@@ -9,9 +9,11 @@
 [![UI: WinUI 3](https://img.shields.io/badge/UI-WinUI%203-blue.svg)]()
 [![Share](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FAlmanex%2FScreentation-V2)](https://twitter.com/intent/tweet?text=Check%20out%20Screentation%20-%20a%20native%20Windows%20screenshot%20annotation%20tool%20built%20with%20WinUI3%20and%20Win2D!&url=https%3A%2F%2Fgithub.com%2FAlmanex%2FScreentation-V2)
 
-Screentation is a native Windows application for quickly creating, editing, and annotating screenshots. It is written in C# using WinUI 3 (Windows App SDK) and the Win2D graphics library for hardware-accelerated rendering.
+Screentation is a native Windows application for editing and annotating screenshots. **Please note:** Screentation does not take screenshots itself. Instead, you create screenshots using standard Windows tools (such as `PrintScreen`, `Win+Shift+S`, etc.), and Screentation automatically detects and imports them from the clipboard for instant editing.
 
-The application allows you to instantly import screenshots from the clipboard (including when minimized to the system tray), apply arrows, frames, or text on top of them, blur sensitive data, crop images, and automatically number instruction steps using both numbers and Latin letters.
+The application is written in C# using WinUI 3 (Windows App SDK) and the Win2D graphics library for hardware-accelerated rendering. It allows you to instantly import screenshots from the clipboard (even when minimized to the system tray), apply arrows, frames, markers, or text on top of them, blur sensitive data, crop images, remove slices, and automatically number instruction steps using both numbers and Latin letters.
+
+The user interface is fully localized in **three languages**: English, Russian, and German.
 
 For detailed usage instructions, please refer to the [User Guide](docs/GUIDE.md).
 
@@ -19,11 +21,11 @@ For detailed usage instructions, please refer to the [User Guide](docs/GUIDE.md)
 
 ## Key Features
 
-* **Automatic Capture**: Background clipboard monitoring (even when minimized to tray) automatically imports screenshots when PrintScreen is pressed.
-* **Markup Tools**: Frames (with/without fills), directional arrows, Gaussian blur for sensitive details, clone stamp (Eraser), and text blocks.
+* **Automatic Capture**: Background clipboard monitoring (even when minimized to tray) automatically detects and imports screenshots copied to the clipboard by standard Windows screenshot tools.
+* **Markup Tools**: Highlight marker, frames (with/without fills), directional arrows, Gaussian blur for sensitive details, clone stamp (Eraser), and text blocks.
 * **Auto-sequenced Steps**: Auto-incremented step markers supporting numeric and alphabetical formats.
 * **Smart Crop**: Image cropping with automatic shifting and coordinate recalculation for all previously drawn annotation elements.
-* **Localization**: Fully localized user interface in three languages (English, Russian, German) with automatic system display language detection.
+* **Localization**: Fully localized user interface in 3 languages (English, Russian, German) with automatic system display language detection and command-line override support.
 
 ---
 

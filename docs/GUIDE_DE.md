@@ -4,8 +4,9 @@ Diese Anleitung beschreibt die Verwendung von Screentation zum Aufnehmen, Kommen
 
 ## Hauptmerkmale
 
-1. **Automatische Aufnahme**
-   * Wenn die Anwendung im Hintergrund ausgeführt wird (auch wenn sie in den System-Tray minimiert ist), importiert das Drücken der Taste `PrintScreen` oder das Erstellen eines Screenshots mit dem Windows Snipping Tool den Screenshot automatisch in die aktive Screentation-Sitzung.
+1. **Automatische Aufnahme (Abfangen der Zwischenablage)**
+   * **Hinweis:** Screentation nimmt selbst keine Screenshots auf. Stattdessen erstellen Sie einen Screenshot mit den standardmäßigen Windows-Bordmitteln (wie `PrintScreen`, `Win + Umschalt + S` usw.).
+   * Wenn Screentation ausgeführt wird (auch wenn es in den System-Tray minimiert ist), überwacht es die Zwischenablage. Sobald ein Screenshot aufgenommen und in die Zwischenablage kopiert wird, erkennt Screentation diesen automatisch und importiert ihn in die aktive Sitzung.
 
 2. **Anmerkungstools**
    * **Auswählen**: Verschieben und Ändern der Größe von Anmerkungen.
@@ -56,3 +57,13 @@ Diese Anleitung beschreibt die Verwendung von Screentation zum Aufnehmen, Kommen
 * Das Schließen des Hauptfensters (über die Schaltfläche `X`) beendet die Anwendung nicht. Stattdessen wird sie im System-Tray ausgeblendet, um die Hintergrundüberwachung der Zwischenablage fortzusetzen.
 * Doppelklicken Sie auf das System-Tray-Symbol, oder klicken Sie mit der rechten Maustaste auf das Symbol und wählen Sie **Screentation öffnen**, um das Fenster wiederherzustellen.
 * Klicken Sie mit der rechten Maustaste auf das System-Tray-Symbol und wählen Sie **Beenden**, um die Anwendung vollständig zu beenden.
+
+## Sprachunterstützung
+
+* Die Anwendung unterstützt **drei Benutzeroberflächensprachen**: Englisch, Russisch und Deutsch.
+* Standardmäßig wird die Anzeigesprache von Windows automatisch erkannt. Sie können auch eine bestimmte Sprache über die Befehlszeile erzwingen, indem Sie das Argument `--lang` übergeben:
+  ```bash
+  Screentation.exe --lang de  # Deutsch erzwingen
+  Screentation.exe --lang en  # Englisch erzwingen
+  Screentation.exe --lang ru  # Russisch erzwingen
+  ```

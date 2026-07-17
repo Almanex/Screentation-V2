@@ -4,8 +4,9 @@ This guide provides details on how to use Screentation for capturing, annotating
 
 ## Key Features
 
-1. **Automatic Capture**
-   * When the application is running (even when minimized to the system tray), pressing the `PrintScreen` key or taking a screenshot via Windows Snipping Tool automatically imports the screenshot into Screentation's active session.
+1. **Automatic Capture (Clipboard Interception)**
+   * **Note:** Screentation does not take screenshots itself. Instead, you create screenshots using standard Windows built-in tools (such as `PrintScreen`, `Win + Shift + S`, etc.).
+   * When Screentation is running (even when minimized to the system tray), it monitors the clipboard. Once a screenshot is taken and copied to the clipboard, Screentation automatically detects and imports it into the active session.
 
 2. **Annotation Tools**
    * **Select**: Move and resize annotations.
@@ -56,3 +57,13 @@ This guide provides details on how to use Screentation for capturing, annotating
 * Closing the main window (using the `X` close button) hides the application to the system tray to ensure background clipboard monitoring remains active.
 * Double-click the system tray icon, or right-click the icon and choose **Open Screentation** to restore the window.
 * Right-click the system tray icon and choose **Exit** to completely close the application.
+
+## Language Support
+
+* The application supports **three interface languages**: English, Russian, and German.
+* By default, it automatically detects your Windows display language. You can also force a specific language via the command line by passing the `--lang` argument:
+  ```bash
+  Screentation.exe --lang en  # Force English
+  Screentation.exe --lang ru  # Force Russian
+  Screentation.exe --lang de  # Force German
+  ```
