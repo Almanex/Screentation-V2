@@ -25,6 +25,7 @@
     <DisableXAMLGeneratedMain>true</DisableXAMLGeneratedMain>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
     <DefaultLanguage>en-US</DefaultLanguage>
+    <AppxDefaultResourceQualifiers>Language=en-US;ru-RU;de-DE</AppxDefaultResourceQualifiers>
   </PropertyGroup>
 
   <ItemGroup>
