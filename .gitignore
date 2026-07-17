@@ -56,3 +56,6 @@ Generated\ Files/
 # Release archives (uploaded to GitHub Releases, not tracked in git)
 *.zip
 *-setup-*.exe
+
+# Signing Keys
+*.pfx

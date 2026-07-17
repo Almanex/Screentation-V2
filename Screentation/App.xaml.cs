@@ -23,18 +23,36 @@ public partial class App : Application
     {
         try
         {
+            string? targetLang = null;
             string[] args = Environment.GetCommandLineArgs();
             for (int i = 0; i < args.Length - 1; i++)
             {
                 if (args[i].Equals("--lang", StringComparison.OrdinalIgnoreCase))
                 {
-                    string lang = args[i + 1];
-                    if (lang.Equals("ru", StringComparison.OrdinalIgnoreCase)) lang = "ru-RU";
-                    else if (lang.Equals("en", StringComparison.OrdinalIgnoreCase)) lang = "en-US";
-                    else if (lang.Equals("de", StringComparison.OrdinalIgnoreCase)) lang = "de-DE";
-
-                    Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = lang;
+                    targetLang = args[i + 1];
                     break;
+                }
+            }
+
+            if (targetLang != null)
+            {
+                if (targetLang.Equals("ru", StringComparison.OrdinalIgnoreCase)) targetLang = "ru-RU";
+                else if (targetLang.Equals("en", StringComparison.OrdinalIgnoreCase)) targetLang = "en-US";
+                else if (targetLang.Equals("de", StringComparison.OrdinalIgnoreCase)) targetLang = "de-DE";
+
+                Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = targetLang;
+            }
+            else
+            {
+                // Fallback to system UI culture if it matches our supported languages
+                string systemLang = System.Globalization.CultureInfo.CurrentUICulture.Name;
+                if (systemLang.StartsWith("ru", StringComparison.OrdinalIgnoreCase))
+                {
+                    Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "ru-RU";
+                }
+                else if (systemLang.StartsWith("de", StringComparison.OrdinalIgnoreCase))
+                {
+                    Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "de-DE";
                 }
             }
         }
