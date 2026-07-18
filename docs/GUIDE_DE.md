@@ -57,10 +57,10 @@ Screentation.exe --lang ru  # Benutzeroberfläche auf Russisch erzwingen
 
 ## Schnellstartanleitung
 
-1.  **App öffnen**: Starten Sie Screentation V2. Sie sehen einen sauberen Arbeitsbereich. Die App wird auch im System-Tray initialisiert.
-2.  **Screenshot aufnehmen**: Verwenden Sie Ihre Standard-Windows-Tastenkombination (z. B. `Win + Umschalt + S`), um einen Teil Ihres Bildschirms zu erfassen.
-3.  **Kommentieren**: Screentation lädt das Bild automatisch aus der Zwischenablage. Klicken Sie auf ein beliebiges Werkzeug in der linken Symbolleiste (z. B. Pfeil, Textmarker, Schritt) und zeichnen Sie direkt auf die Leinwand.
-4.  **Exportieren**: Klicken Sie auf **Aktives speichern** (oder drücken Sie `Strg + S`), um das aktuelle Bild zu speichern, oder auf **Alle speichern**, um alle Aufnahmen stapelweise in das zugewiesene Verzeichnis zu exportieren.
+1. **Schritt 1: App öffnen** — Starten Sie Screentation V2. Sie sehen einen sauberen Arbeitsbereich. Die App wird auch im System-Tray initialisiert.
+2. **Schritt 2: Screenshot aufnehmen** — Verwenden Sie Ihre Standard-Windows-Tastenkombination (z. B. `Win + Umschalt + S`), um einen Teil Ihres Bildschirms zu erfassen.
+3. **Schritt 3: Kommentieren** — Screentation lädt das Bild automatisch aus der Zwischenablage. Klicken Sie auf ein beliebiges Werkzeug in der linken Symbolleiste (z. B. Pfeil, Textmarker, Schritt) und zeichnen Sie direkt auf die Leinwand.
+4. **Schritt 4: Exportieren** — Klicken Sie auf **Aktives speichern** (oder drücken Sie `Strg + S`), um das aktuelle Bild zu speichern, oder auf **Alle speichern**, um alle Aufnahmen stapelweise in das zugewiesene Verzeichnis zu exportieren.
 
 ## Tipps & Tastaturkurzel
 

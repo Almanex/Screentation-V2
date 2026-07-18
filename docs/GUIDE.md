@@ -57,10 +57,10 @@ Screentation.exe --lang de  # Force German interface
 
 ## Quick-Start Instructions
 
-1.  **Open the App**: Launch Screentation V2. You will see a clean workspace. The app also initializes in the system tray.
-2.  **Take a Screenshot**: Use your default Windows shortcut (e.g., `Win + Shift + S`) to capture a portion of your screen.
-3.  **Annotate**: Screentation will automatically pull the image. Click any tool in the left toolbar (e.g., Arrow, Highlighter, Step) and draw directly on the canvas.
-4.  **Export**: Click **Save Active** (or press `Ctrl + S`) to save the current image, or **Save All** to batch-export all captures to your designated directory.
+1. **Step 1: Open the App** — Launch Screentation V2. You will see a clean workspace. The app also initializes in the system tray.
+2. **Step 2: Take a Screenshot** — Use your default Windows shortcut (e.g., `Win + Shift + S`) to capture a portion of your screen.
+3. **Step 3: Annotate** — Screentation will automatically pull the image. Click any tool in the left toolbar (e.g., Arrow, Highlighter, Step) and draw directly on the canvas.
+4. **Step 4: Export** — Click **Save Active** (or press `Ctrl + S`) to save the current image, or **Save All** to batch-export all captures to your designated directory.
 
 ## Tips & Keyboard Shortcuts
 
