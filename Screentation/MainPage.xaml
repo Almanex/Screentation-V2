@@ -57,12 +57,9 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
-                                <Border Width="100" Height="70" CornerRadius="4" Background="Black" VerticalAlignment="Center">
-                                    <Image Source="{x:Bind Thumbnail}" Stretch="Uniform" />
-                                </Border>
-                                <TextBlock Text="{x:Bind Name}" VerticalAlignment="Center" FontWeight="Medium" TextTrimming="CharacterEllipsis" MaxWidth="80" />
-                            </StackPanel>
+                            <Border Grid.Column="0" Width="150" Height="76" CornerRadius="4" Background="Black" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Image Source="{x:Bind Thumbnail}" Stretch="Uniform" />
+                            </Border>
 
                             <!-- Delete Button -->
                             <Button Grid.Column="1" Click="BtnDeleteSession_Click" VerticalAlignment="Center" Margin="0,0,4,0" Padding="6" Background="Transparent" BorderBrush="Transparent">

@@ -103,7 +103,7 @@ public class AnnotationCanvas : Grid
 
     public static readonly DependencyProperty ActiveFontSizeProperty =
         DependencyProperty.Register(nameof(ActiveFontSize), typeof(float), typeof(AnnotationCanvas),
-            new PropertyMetadata(36.0f));
+            new PropertyMetadata(36.0f, OnActiveFontSizeChanged));
 
     public float ActiveFontSize
     {
@@ -144,6 +144,46 @@ public class AnnotationCanvas : Grid
         canvas.NextStepValueChanged?.Invoke(canvas, val);
     }
 
+    private static void OnActiveFontSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var canvas = (AnnotationCanvas)d;
+        float val = (float)e.NewValue;
+        if (canvas.SelectedElement != null)
+        {
+            if (canvas.SelectedElement is TextElement textEl)
+            {
+                textEl.FontSize = val;
+                canvas._canvas.Invalidate();
+            }
+        }
+    }
+
+    private static void OnActiveColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var canvas = (AnnotationCanvas)d;
+        Color val = (Color)e.NewValue;
+        if (canvas.SelectedElement != null)
+        {
+            canvas.SelectedElement.Color = val;
+            canvas._canvas.Invalidate();
+        }
+    }
+
+    private static void OnActiveThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var canvas = (AnnotationCanvas)d;
+        float val = (float)e.NewValue;
+        if (canvas.SelectedElement != null)
+        {
+            canvas.SelectedElement.StrokeThickness = val;
+            if (canvas.SelectedElement is StepElement stepEl)
+            {
+                stepEl.Radius = 15.0f + val * 5.0f;
+            }
+            canvas._canvas.Invalidate();
+        }
+    }
+
     // Dependency Properties
     public static readonly DependencyProperty SessionProperty =
         DependencyProperty.Register(nameof(Session), typeof(ScreenshotSession), typeof(AnnotationCanvas),
@@ -167,7 +207,7 @@ public class AnnotationCanvas : Grid
 
     public static readonly DependencyProperty ActiveColorProperty =
         DependencyProperty.Register(nameof(ActiveColor), typeof(Color), typeof(AnnotationCanvas),
-            new PropertyMetadata(Microsoft.UI.Colors.Red));
+            new PropertyMetadata(Microsoft.UI.Colors.Red, OnActiveColorChanged));
 
     public Color ActiveColor
     {
@@ -177,7 +217,7 @@ public class AnnotationCanvas : Grid
 
     public static readonly DependencyProperty ActiveThicknessProperty =
         DependencyProperty.Register(nameof(ActiveThickness), typeof(float), typeof(AnnotationCanvas),
-            new PropertyMetadata(3.0f));
+            new PropertyMetadata(3.0f, OnActiveThicknessChanged));
 
     public float ActiveThickness
     {
@@ -730,7 +770,8 @@ public class AnnotationCanvas : Grid
                         Center = origPt,
                         Color = ActiveColor,
                         Number = val,
-                        Label = label
+                        Label = label,
+                        Radius = 15.0f + ActiveThickness * 5.0f
                     };
                     NextStepValue = val + 1;
                     _isDrawing = false;

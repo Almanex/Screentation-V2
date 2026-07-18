@@ -1,12 +1,12 @@
 [Setup]
 AppName=Screentation
-AppVersion=2.0.0
+AppVersion=2.0.3
 AppPublisher=Almanex
 AppPublisherURL=https://github.com/Almanex/Screentation-V2
 DefaultDirName={localappdata}\Programs\Screentation
 DefaultGroupName=Screentation
 OutputDir=D:\Develop\Screentation-V2
-OutputBaseFilename=Screentation-v2.0.0-setup-win-x64
+OutputBaseFilename=Screentation-v2.0.3-setup-win-x64
 SetupIconFile=D:\Develop\Screentation-V2\Screentation\Assets\AppIcon.ico
 Compression=lzma2/max
 SolidCompression=yes

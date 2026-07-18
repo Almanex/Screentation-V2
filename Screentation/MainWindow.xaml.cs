@@ -12,6 +12,7 @@ public sealed partial class MainWindow : Window
     private TrayManager? _trayManager;
     private bool _isExiting = false;
     private bool _trayInitialized = false;
+    private Windows.UI.ViewManagement.UISettings? _uiSettings;
 
     public MainWindow()
     {
@@ -31,6 +32,28 @@ public sealed partial class MainWindow : Window
         this.Activated += OnFirstActivated;
 
         RootFrame.Navigate(typeof(MainPage));
+
+        // Listen for system theme changes and refresh theme resources
+        _uiSettings = new Windows.UI.ViewManagement.UISettings();
+        _uiSettings.ColorValuesChanged += UISettings_ColorValuesChanged;
+    }
+
+    private void UISettings_ColorValuesChanged(Windows.UI.ViewManagement.UISettings sender, object args)
+    {
+        this.DispatcherQueue.TryEnqueue(() =>
+        {
+            ApplyTheme();
+        });
+    }
+
+    private void ApplyTheme()
+    {
+        if (Content is FrameworkElement rootElement)
+        {
+            rootElement.RequestedTheme = ElementTheme.Light;
+            rootElement.RequestedTheme = ElementTheme.Dark;
+            rootElement.RequestedTheme = ElementTheme.Default;
+        }
     }
 
     private void OnFirstActivated(object sender, WindowActivatedEventArgs e)

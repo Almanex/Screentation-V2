@@ -528,9 +528,12 @@ public sealed partial class MainPage : Page
             // Clear selection before render
             DrawingCanvas.ClearSelection();
             
+            int sessionIndex = _sessions.IndexOf(activeSession);
+            int displayIndex = sessionIndex >= 0 ? sessionIndex + 1 : 1;
+            
             await ExportManager.ExportSessionAsync(
                 activeSession,
-                1,
+                displayIndex,
                 SettingsManager.Current.ExportPath,
                 SettingsManager.Current.ExportFormat,
                 SettingsManager.Current.ExportQuality,
@@ -586,7 +589,9 @@ public sealed partial class MainPage : Page
             Title = title,
             Content = content,
             CloseButtonText = "OK",
-            XamlRoot = this.XamlRoot
+            XamlRoot = this.XamlRoot,
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            RequestedTheme = this.ActualTheme
         };
         await dialog.ShowAsync();
     }
@@ -668,15 +673,28 @@ public sealed partial class MainPage : Page
 
     private async void BtnAbout_Click(object sender, RoutedEventArgs e)
     {
+        string version;
+        try
+        {
+            var packageVersion = Windows.ApplicationModel.Package.Current.Id.Version;
+            version = $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}";
+        }
+        catch
+        {
+            version = "2.0.1";
+        }
+
         var aboutDialog = new ContentDialog
         {
             Title = "Screentation",
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            RequestedTheme = this.ActualTheme,
             Content = new StackPanel
             {
                 Spacing = 12,
                 Children =
                 {
-                    new TextBlock { Text = "Screentation v2.0.0", FontWeight = Microsoft.UI.Text.FontWeights.Bold },
+                    new TextBlock { Text = $"Screentation v{version}", FontWeight = Microsoft.UI.Text.FontWeights.Bold },
                     new TextBlock { Text = _resourceLoader.GetString("AboutDescription"), TextWrapping = TextWrapping.Wrap },
                     new HyperlinkButton
                     {

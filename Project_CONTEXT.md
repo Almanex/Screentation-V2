@@ -168,6 +168,7 @@ foreach (var element in Session.Annotations) {
 ## 7. Roadmap
 
 - [x] **UI Localization**: Move string resources to `.resw` for RU, EN, and DE language support.
+- [x] **Microsoft Store Preparation**: Add conditional MSIX packaging support, manifest capability cleanup, and store publishing guides.
 - [ ] **Export to PDF**: Add multi-page PDF generation from active sessions.
 - [ ] **Text Hit-Testing Layout**: Refactor `TextElement` hit-testing using `CanvasTextLayout`.
 - [ ] **Export Notification Banner**: Add a WinUI `InfoBar` on the main page to alert the user of export errors or status.
