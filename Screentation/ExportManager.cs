@@ -77,7 +77,7 @@ public static class ExportManager
             using var memoryStream = new InMemoryRandomAccessStream();
             BitmapEncoder encoder;
             
-            if (encoderId == BitmapEncoder.JpegEncoderId || encoderId == new Guid("e094b660-ad50-440a-9e0c-4b137c60b177"))
+            if (encoderId == BitmapEncoder.JpegEncoderId)
             {
                 var propertySet = new BitmapPropertySet();
                 var qualityValue = new BitmapTypedValue(Math.Clamp(quality / 100f, 0.0f, 1.0f), Windows.Foundation.PropertyType.Single);

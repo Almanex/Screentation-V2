@@ -44,16 +44,8 @@ public partial class App : Application
             }
             else
             {
-                // Fallback to system UI culture if it matches our supported languages
-                string systemLang = System.Globalization.CultureInfo.CurrentUICulture.Name;
-                if (systemLang.StartsWith("ru", StringComparison.OrdinalIgnoreCase))
-                {
-                    Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "ru-RU";
-                }
-                else if (systemLang.StartsWith("de", StringComparison.OrdinalIgnoreCase))
-                {
-                    Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "de-DE";
-                }
+                // Clear the override so Windows automatically selects the language matching the OS locale
+                Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "";
             }
         }
         catch
