@@ -37,6 +37,24 @@ Save your annotated screenshots in **PNG**, **JPEG**, or compressed **WebP** for
 *   Batch export ("Save All") saves all screenshots in one click.
 *   File naming prevents overwrites by using the screenshot's list index (e.g. `Screentation_02.png`), ensuring your work is never lost.
 
+## Interface Languages & Localization
+
+Screentation V2 is designed for a global audience and is fully localized in **three languages**:
+*   **English** (US)
+*   **Russian** (RU)
+*   **German** (DE)
+
+### Automatic Detection
+By default, the application automatically detects your Windows system display language on startup and loads the matching translation resources.
+
+### Manual Language Override
+If you want to run the application in a language different from your OS settings, you can launch it from the command line or terminal with the `--lang` flag:
+```bash
+Screentation.exe --lang en  # Force English interface
+Screentation.exe --lang ru  # Force Russian interface
+Screentation.exe --lang de  # Force German interface
+```
+
 ## Quick-Start Instructions
 
 1.  **Open the App**: Launch Screentation V2. You will see a clean workspace. The app also initializes in the system tray.
@@ -75,3 +93,10 @@ Screentation V2 is a single-instance app. Launching it again will automatically 
 
 ### Why do UI buttons sometimes look white-on-white?
 Screentation V2 includes a runtime theme synchronization listener. If your system changes theme (e.g. Dark to Light), the application will instantly update all controls and fonts to ensure they remain readable.
+
+## Join the Community & Support
+
+Screentation V2 is an open-source tool built to simplify screenshot workflow.
+*   **Star the Repo**: If you find this tool helpful, please give us a star on [GitHub](https://github.com/Almanex/Screentation-V2)!
+*   **Report Issues**: Encountered a bug or have a feature idea? Open an issue on our GitHub page.
+*   **Contribute**: Pull requests are always welcome! Help us make Screentation even better for everyone.

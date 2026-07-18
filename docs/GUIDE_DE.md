@@ -37,6 +37,24 @@ Speichern Sie Ihre kommentierten Screenshots in den Formaten **PNG**, **JPEG** o
 *   Der Batch-Export („Alle speichern“) speichert alle Screenshots mit einem Klick.
 *   Die Dateibenennung verhindert ein Überschreiben, indem sie den Listenindex des Screenshots verwendet (z. B. `Screentation_02.png`), wodurch Ihre Arbeit niemals verloren geht.
 
+## Unterstützte Sprachen & Lokalisierung
+
+Screentation V2 wurde für ein internationales Publikum entwickelt und ist vollständig in **drei Sprachen** übersetzt:
+*   **Englisch** (EN)
+*   **Russisch** (RU)
+*   **Deutsch** (DE)
+
+### Automatische Erkennung
+Beim Start erkennt die Anwendung automatisch die Anzeigesprache Ihres Windows-Betriebssystems und lädt die entsprechenden Übersetzungsressourcen.
+
+### Manuelle Sprachwahl
+Wenn Sie die Anwendung in einer anderen Sprache als Ihrer Betriebssystem-Einstellung starten möchten, können Sie sie über die Befehlszeile mit dem Parameter `--lang` starten:
+```bash
+Screentation.exe --lang de  # Benutzeroberfläche auf Deutsch erzwingen
+Screentation.exe --lang en  # Benutzeroberfläche auf Englisch erzwingen
+Screentation.exe --lang ru  # Benutzeroberfläche auf Russisch erzwingen
+```
+
 ## Schnellstartanleitung
 
 1.  **App öffnen**: Starten Sie Screentation V2. Sie sehen einen sauberen Arbeitsbereich. Die App wird auch im System-Tray initialisiert.
@@ -75,3 +93,10 @@ Screentation V2 ist eine Single-Instance-Anwendung. Ein erneuter Start fängt di
 
 ### Warum sehen Schaltflächen manchmal weiß-auf-weiß aus?
 Screentation V2 verfügt über einen dynamischen Ereignis-Listener zur Synchronisierung von Systemthemen. Wenn sich das Windows-Design ändert (z. B. Dunkel- zu Hellmodus), aktualisiert die Anwendung sofort alle Steuerelemente und Schriftarten, um eine optimale Lesbarkeit zu gewährleisten.
+
+## Community & Unterstützung
+
+Screentation V2 ist ein kostenloses Open-Source-Projekt. Ihre Unterstützung hilft uns bei der Weiterentwicklung!
+*   **Projekt unterstützen**: Wenn Ihnen das Tool gefällt, geben Sie uns bitte einen Stern auf [GitHub](https://github.com/Almanex/Screentation-V2)!
+*   **Fehler melden**: Haben Sie einen Fehler gefunden oder eine Idee? Erstellen Sie ein Issue auf unserer GitHub-Projektseite.
+*   **Mitwirken**: Pull Requests sind jederzeit herzlich willkommen. Helfen Sie uns, Screentation für alle noch besser zu machen!
