@@ -17,15 +17,15 @@
     - PublisherDisplayName: Your developer display name (e.g. Almanex)
   -->
   <Identity
-    Name="56833F64-C92E-4FEA-A381-804657A2C680"
-    Publisher="CN=AppPublisher"
+    Name="AlmanexDev.Screentation"
+    Publisher="CN=EAB645E2-6324-4940-918E-9C63AC494248"
     Version="2.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="56833F64-C92E-4FEA-A381-804657A2C680" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Screentation</DisplayName>
-    <PublisherDisplayName>AppPublisher</PublisherDisplayName>
+    <PublisherDisplayName>Almanex Dev</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
