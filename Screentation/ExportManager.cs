@@ -57,10 +57,34 @@ public static class ExportManager
         }
 
         // 4. Save to target format
+        if (format.ToLowerInvariant() == "webp")
+        {
+            try
+            {
+                using var pngStream = new InMemoryRandomAccessStream();
+                await renderTarget.SaveAsync(pngStream, CanvasBitmapFileFormat.Png);
+                pngStream.Seek(0);
+
+                using var image = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.Bgra32>(pngStream.AsStreamForRead());
+                
+                using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Read, 4096, useAsync: true);
+                var encoder = new SixLabors.ImageSharp.Formats.Webp.WebpEncoder
+                {
+                    Quality = quality,
+                    FileFormat = SixLabors.ImageSharp.Formats.Webp.WebpFileFormatType.Lossy
+                };
+                image.Save(fileStream, encoder);
+                return;
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to save WebP image to {filePath}. {ex.Message}", ex);
+            }
+        }
+
         Guid encoderId = format.ToLowerInvariant() switch
         {
             "jpeg" => BitmapEncoder.JpegEncoderId,
-            "webp" => new Guid("e094b660-ad50-440a-9e0c-4b137c60b177"), // WebP WIC Encoder
             _ => BitmapEncoder.PngEncoderId
         };
 
@@ -100,21 +124,7 @@ public static class ExportManager
         }
         catch (Exception ex)
         {
-            // WebP WIC codec might not be installed. Fall back to PNG if WebP fails.
-            if (encoderId == new Guid("e094b660-ad50-440a-9e0c-4b137c60b177"))
-            {
-                string fallbackPath = Path.Combine(targetFolder, $"{baseName}.png");
-                using var memoryStream = new InMemoryRandomAccessStream();
-                await renderTarget.SaveAsync(memoryStream, CanvasBitmapFileFormat.Png);
-                memoryStream.Seek(0);
-
-                using var fileStream = new FileStream(fallbackPath, FileMode.Create, FileAccess.Write, FileShare.Read, 4096, useAsync: true);
-                await memoryStream.AsStreamForRead().CopyToAsync(fileStream);
-            }
-            else
-            {
-                throw new IOException($"Failed to save image to {filePath}. {ex.Message}", ex);
-            }
+            throw new IOException($"Failed to save image to {filePath}. {ex.Message}", ex);
         }
     }
 }
