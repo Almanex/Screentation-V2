@@ -1,4 +1,5 @@
 <p align="center">
+  <img src="/screenshots/screentation_01.png" width="98%" alt="Screentation is a native Windows application" />
   <img src="/screenshots/screentation_02.png" width="98%" alt="Screentation is a native Windows application" />
 </p>
 
