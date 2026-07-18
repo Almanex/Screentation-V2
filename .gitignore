@@ -59,3 +59,14 @@ Generated\ Files/
 
 # Signing Keys
 *.pfx
+
+# Store promotional assets and local bundles
+/store_logo_*.png
+/store_poster_*.png
+/store_logo_*.jpg
+/store_poster_*.jpg
+/store_logo_*.jpeg
+/store_poster_*.jpeg
+/store_logo_1_1.png
+/store_poster_9_16.png
+/*.msixbundle
