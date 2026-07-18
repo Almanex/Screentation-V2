@@ -20,11 +20,13 @@ Detaillierte Informationen zur Verwendung der Anwendung finden Sie im [Benutzerh
 
 ## Hauptmerkmale
 
-* **Automatische Aufnahme**: Die Hintergrundüberwachung der Zwischenablage (auch im System-Tray) erkennt und importiert automatisch Screenshots, die mit den standardmäßigen Windows-Screenshot-Tools in die Zwischenablage kopiert wurden.
-* **Anmerkungstools**: Textmarker, Rahmen (mit/ohne Füllung), Richtungspfeile, Gaußsche Unschärfe für sensible Daten, Kopierstempel (Eraser) und Textblöcke.
-* **Automatische Schrittnummerierung**: Marker mit automatischer Erhöhung unterstützen numerische und alphabetische Formate.
-* **Intelligentes Zuschneiden**: Zuschneiden des Bildes mit automatischer Anpassung und Verschiebung der Koordinaten aller zuvor gezeichneten Elemente.
-* **Lokalisierung**: Vollständige Übersetzung der Benutzeroberfläche in 3 Sprachen (Russisch, Englisch, Deutsch) mit automatischer Erkennung der System-Sprache und Befehlszeilen-Parameter zur Sprachwahl.
+*   **Automatische Aufnahme**: Die Hintergrundüberwachung der Zwischenablage (auch im System-Tray) erkennt und importiert automatisch Screenshots, die mit den standardmäßigen Windows-Screenshot-Tools in die Zwischenablage kopiert wurden.
+*   **Anmerkungstools**: Halbtransparenter Textmarker, Rahmen (mit/ohne Füllung), Richtungspfeile, Gaußsche Unschärfe für sensible Daten, Kopierstempel (Eraser) und Textblöcke.
+*   **Automatische Schrittnummerierung**: Marker mit automatischer Erhöhung unterstützen numerische und alphabetische Formate, wobei der Kreisdurchmesser sich dynamisch an die Stiftstärke anpasst.
+*   **Zuschneiden & Segmentausschnitte**: Zuschneiden des Bildes und Entfernen horizontaler/vertikaler Segmente mit automatischer Anpassung und Verschiebung der Koordinaten aller zuvor gezeichneten Elemente.
+*   **Lokalisierung**: Vollständige Übersetzung der Benutzeroberfläche in 3 Sprachen (Russisch, Englisch, Deutsch) mit automatischer Erkennung der System-Sprache und Befehlszeilen-Parameter zur Sprachwahl.
+*   **WebP-Export**: Unterstützung für das Speichern von Dateien in den Formaten WebP (mit Qualitätsregler), PNG und JPEG. Die Benennung verhindert Überschreibungen durch Verwendung von Indizes.
+*   **Dynamische Systemsynchronisation**: Nahtlose Anpassung des Anwendungsdesigns, der Schaltflächen und Dialogfelder an Änderungen des Windows-Designs (Dunkel-/Hellmodus) zur Laufzeit.
 
 ---
 
@@ -35,6 +37,7 @@ Detaillierte Informationen zur Verwendung der Anwendung finden Sie im [Benutzerh
 | Plattform | .NET 10.0 | Ziel-Framework net10.0-windows |
 | Benutzeroberfläche (UI) | WinUI 3 | Windows App SDK (v2.2.0) |
 | Grafik-Engine | Win2D | Hardware-beschleunigtes Zeichnen von Formen (v1.4.0) |
+| Bildverarbeitung | SixLabors.ImageSharp | Verwaltete WebP-Bildkodierung (v2.1.9) |
 | System-Tray | Win32 API | Native Integration von Shell_NotifyIcon und WNDPROC Subclassing |
 
 ---
@@ -72,16 +75,28 @@ Dadurch wird das Projekt auf Kompilierungsfehler und Warnungen überprüft.
 
 ## Bereitstellung
 
+### 1. Klassisches Installationsprogramm (Inno Setup)
 Veröffentlichung als eigenständiges Release (Single-File / Self-Contained):
 ```bash
-dotnet publish -c Release -r win-x64 --self-contained true
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishPackaged=false
 ```
-Das Ergebnis wird im Ordner `publish/` gespeichert und umfasst:
-* `Screentation.exe` (eigenständige ausführbare Datei ~300 MB, enthält die .NET-Laufzeitumgebung und WinUI 3-Bibliotheken).
-* Den Ordner `Assets/` (Grafikressourcen der Anwendung).
+Kompilieren des Setup-Programms mittels Inno Setup (`setup.iss`):
+```bash
+& "ISCC.exe" setup.iss
+```
+
+### 2. MSIX-Paket (Windows Store & Sideloading)
+Löschen vorheriger Build-Caches:
+```bash
+dotnet clean -c Release -r win-x64 -p:PublishPackaged=true -p:Platform=x64
+```
+Erstellen und Signieren eines MSIX-Pakets:
+```bash
+dotnet publish -c Release -r win-x64 -p:PublishPackaged=true -p:GenerateAppxPackageOnBuild=true -p:Platform=x64 -p:AppxPackageSigningEnabled=true
+```
 
 ### Windows Defender SmartScreen-Warnung
-Da die ausführbare Datei der Anwendung nicht mit einem digitalen Entwicklerzertifikat signiert ist, blockiert Windows Defender Smartscreen diese möglicherweise beim ersten Start.
+Da das eigenständige Installationsprogramm nicht mit einem digitalen Entwicklerzertifikat signiert ist, blockiert Windows Defender Smartscreen dieses möglicherweise beim ersten Start.
 So starten Sie die Anwendung:
 1. Klicken Sie auf den Link **Weitere Informationen**.
 2. Klicken Sie auf die Schaltfläche **Trotzdem ausführen**.

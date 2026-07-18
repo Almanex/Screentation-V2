@@ -1,69 +1,77 @@
-# Screentation User Guide
+# Screentation V2 User Guide — How to Annotate Screenshots on Windows
 
-This guide provides details on how to use Screentation for capturing, annotating, and managing your screenshots.
+> [!NOTE]
+> Screentation V2 is a professional desktop utility that automates screenshot annotation, highlighting, and step-sequencing. It runs in the background, intercepting screenshots copied to the clipboard, and lets you add vector markups, blur details, crop, or slice cut images. Export files in high-quality WebP, PNG, or JPEG without overwriting existing files.
 
-## Key Features
+Screentation V2 provides a clean, native desktop environment for technical writers, software developers, and support specialists who create step-by-step instructions. By running silently in the system tray, it streamlines the workflow of capturing, markup editing, and exporting images.
 
-1. **Automatic Capture (Clipboard Interception)**
-   * **Note:** Screentation does not take screenshots itself. Instead, you create screenshots using standard Windows built-in tools (such as `PrintScreen`, `Win + Shift + S`, etc.).
-   * When Screentation is running (even when minimized to the system tray), it monitors the clipboard. Once a screenshot is taken and copied to the clipboard, Screentation automatically detects and imports it into the active session.
+## Core Features
 
-2. **Annotation Tools**
-   * **Select**: Move and resize annotations.
-   * **Frame (Rect)**: Add rectangular frames, optionally with semi-transparent fills.
-   * **Arrow**: Draw directional arrows to point out interface elements.
-   * **Blur**: Mask sensitive details with Gaussian blur.
-   * **Eraser (Clone Stamp)**: Hide UI elements by copying textures from one area to another.
-   * **Text**: Add text annotations with customizable font sizes and colors.
-   * **Step**: Draw auto-incremented step numbers.
+### Clipboard Monitoring & System Tray
+Screentation V2 does not capture screenshots on its own. Instead, it monitors your system clipboard. When you copy a screenshot using standard Windows tools (like `Win + Shift + S` or `PrintScreen`), Screentation instantly imports it. Closing the window minimizes the app to the system tray so that it continues capturing screenshots in the background.
 
-3. **Smart Crop**
-   * Crop the screenshot to any rectangular area. Confirmed crops automatically adjust and shift existing annotation elements so they remain in place relative to the new image boundaries.
+### Premium Annotation Vector Markups
+*   **Arrow**: Draw precise directional arrows to point out specific interface elements.
+*   **Frame (Rect)**: Place rectangles around key components, optionally with semi-transparent background fills.
+*   **Text**: Insert text annotations on top of the image with a custom font size and color.
+*   **Highlighter**: Use the semi-transparent marker brush to highlight code snippets, UI text, or layout sections.
+*   **Dynamic Thickness & Color Sliders**: Adjust the drawing pen thickness or select custom color schemes in real time; currently selected items will update instantly.
 
-4. **Zoom & Pan**
-   * Hold the `Ctrl` key and scroll the mouse wheel to zoom in on the cursor position, or use the zoom slider in the settings panel.
-   * Pan the zoomed canvas by holding the middle mouse button (wheel) and dragging.
-   * Click "Reset" to fit the image to the window.
+### Privacy Masking & Redaction
+*   **Gaussian Blur**: Apply standard Gaussian blur overlay to mask passwords, emails, or personal data.
+*   **Clone Stamp (Eraser)**: Hide interface elements by cloning textures from one area of the screenshot to another.
 
-5. **Step Numbering Formats**
-   * Supports numbers (`1, 2, 3...`), capital letters (`A, B, C...`), and lowercase letters (`a, b, c...`).
-   * The starting sequence value can be adjusted using the "Next Step" control.
+### Smart Cropping & Slice Cutting
+*   **Smart Crop**: Crop your screenshot to any size. Existing annotation elements automatically shift coordinates so they remain perfectly aligned with the cropped image.
+*   **Slice Cut**: Delete a horizontal or vertical strip of the screenshot. The remaining pieces snap together seamlessly, and all annotation elements below or to the right shift automatically.
 
-6. **Color Palette**
-   * Quick-selection color presets are available.
-   * Custom colors can be chosen using the spectral ColorPicker. Custom colors are saved across application restarts.
+### Auto-Sequenced Step Markers
+Place step circles that increment automatically to build numbered walkthroughs.
+*   Supports three formats: Numbers (`1, 2, 3...`), uppercase Latin letters (`A, B, C...`), and lowercase Latin letters (`a, b, c...`).
+*   The circle size scales dynamically based on the active drawing thickness.
+*   You can change the value of the next step at any time using the settings panel.
 
-## Keyboard Shortcuts
+### File Export Formats (WebP, PNG, JPEG)
+Save your annotated screenshots in **PNG**, **JPEG**, or compressed **WebP** formats.
+*   The output directory is fully configurable.
+*   Batch export ("Save All") saves all screenshots in one click.
+*   File naming prevents overwrites by using the screenshot's list index (e.g. `Screentation_02.png`), ensuring your work is never lost.
+
+## Quick-Start Instructions
+
+1.  **Open the App**: Launch Screentation V2. You will see a clean workspace. The app also initializes in the system tray.
+2.  **Take a Screenshot**: Use your default Windows shortcut (e.g., `Win + Shift + S`) to capture a portion of your screen.
+3.  **Annotate**: Screentation will automatically pull the image. Click any tool in the left toolbar (e.g., Arrow, Highlighter, Step) and draw directly on the canvas.
+4.  **Export**: Click **Save Active** (or press `Ctrl + S`) to save the current image, or **Save All** to batch-export all captures to your designated directory.
+
+## Tips & Keyboard Shortcuts
 
 | Shortcut | Action |
 | --- | --- |
 | `Ctrl + V` | Manually paste screenshot from clipboard |
-| `Ctrl + Z` | Undo last action |
-| `Ctrl + Y` or `Ctrl + Shift + Z` | Redo last undone action |
-| `Ctrl + S` | Save the active screenshot to disk |
+| `Ctrl + Z` | Undo last edit action |
+| `Ctrl + Y` / `Ctrl + Shift + Z` | Redo last undone action |
+| `Ctrl + S` | Save active screenshot |
 | `Ctrl + Shift + S` | Save all screenshots (batch export) |
-| `Delete` or `Backspace` | Remove selected annotation element |
-| `Escape` | Reset active selection or exit current drawing tool |
-| `Enter` (during crop) | Confirm and apply crop |
-| `Escape` (during crop) | Cancel crop |
+| `Delete` / `Backspace` | Delete currently selected annotation |
+| `Escape` | Cancel active drawing tool or deselect elements |
+| `Enter` | Apply active crop / slice cut |
+| `Escape` (in crop/slice mode) | Cancel active crop / slice cut |
 | `1` | Select Frame tool |
 | `2` | Select Step tool |
 | `3` | Select Arrow tool |
 | `4` | Select Blur tool |
 | `5` | Select Stamp (Eraser) tool |
+| `Ctrl + Mouse Wheel` | Zoom canvas in or out centered on cursor |
+| `Middle Mouse Button (Drag)` | Pan zoomed canvas |
 
-## System Tray Integration
+## FAQ & Troubleshooting
 
-* Closing the main window (using the `X` close button) hides the application to the system tray to ensure background clipboard monitoring remains active.
-* Double-click the system tray icon, or right-click the icon and choose **Open Screentation** to restore the window.
-* Right-click the system tray icon and choose **Exit** to completely close the application.
+### Windows Defender SmartScreen warning on launch?
+Because the standalone installer is unsigned, Windows may show a warning on first run. Click **"More info"**, then select **"Run anyway"** to proceed.
 
-## Language Support
+### How to run multiple instances?
+Screentation V2 is a single-instance app. Launching it again will automatically bring the active background instance to the foreground instead of creating duplicate tray icons.
 
-* The application supports **three interface languages**: English, Russian, and German.
-* By default, it automatically detects your Windows display language. You can also force a specific language via the command line by passing the `--lang` argument:
-  ```bash
-  Screentation.exe --lang en  # Force English
-  Screentation.exe --lang ru  # Force Russian
-  Screentation.exe --lang de  # Force German
-  ```
+### Why do UI buttons sometimes look white-on-white?
+Screentation V2 includes a runtime theme synchronization listener. If your system changes theme (e.g. Dark to Light), the application will instantly update all controls and fonts to ensure they remain readable.

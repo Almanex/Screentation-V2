@@ -25,11 +25,13 @@ For detailed usage instructions, please refer to the [User Guide](docs/GUIDE.md)
 
 ## Key Features
 
-* **Automatic Capture**: Background clipboard monitoring (even when minimized to tray) automatically detects and imports screenshots copied to the clipboard by standard Windows screenshot tools.
-* **Markup Tools**: Highlight marker, frames (with/without fills), directional arrows, Gaussian blur for sensitive details, clone stamp (Eraser), and text blocks.
-* **Auto-sequenced Steps**: Auto-incremented step markers supporting numeric and alphabetical formats.
-* **Smart Crop**: Image cropping with automatic shifting and coordinate recalculation for all previously drawn annotation elements.
-* **Localization**: Fully localized user interface in 3 languages (English, Russian, German) with automatic system display language detection and command-line override support.
+*   **Automatic Capture**: Background clipboard monitoring (even when minimized to tray) automatically detects and imports screenshots copied to the clipboard by standard Windows screenshot tools.
+*   **Markup Tools**: Semi-transparent highlight marker, frames (with/without fills), directional arrows, Gaussian blur for sensitive details, clone stamp (Eraser), and text blocks.
+*   **Auto-sequenced Steps**: Auto-incremented step markers supporting numeric and alphabetical formats, with circle radius scaling dynamically to drawing thickness.
+*   **Smart Crop & Slice Cut**: Crop images or cut horizontal/vertical slices with automatic coordinate recalculation and snapping for all previously drawn annotation elements.
+*   **Localization**: Fully localized user interface in 3 languages (English, Russian, German) with automatic system display language detection and command-line override support.
+*   **WebP Export**: Support for exporting in high-quality WebP, PNG, or JPEG formats. Prevents file overwrite by naming files using list indices.
+*   **Runtime Theme Synchronization**: Smooth adaptation of application layout, content dialogs, and button contrasts to system theme changes at runtime.
 
 ---
 
@@ -40,6 +42,7 @@ For detailed usage instructions, please refer to the [User Guide](docs/GUIDE.md)
 | Platform | .NET 10.0 | net10.0-windows target framework |
 | UI Framework | WinUI 3 | Windows App SDK (v2.2.0) |
 | Graphics Rendering | Win2D | Hardware-accelerated 2D drawing (v1.4.0) |
+| Image Processing | SixLabors.ImageSharp | Managed WebP image encoding (v2.1.9) |
 | System Tray | Win32 API | Native Shell_NotifyIcon & subclassed WNDPROC |
 
 ---
@@ -76,16 +79,28 @@ dotnet build -c Debug
 
 ## Deployment
 
+### 1. Standalone Installer (Inno Setup)
 Publish a standalone release (Single-File / Self-Contained):
 ```bash
-dotnet publish -c Release -r win-x64 --self-contained true
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishPackaged=false
 ```
-The published files will be saved in `publish/` and consist of:
-* `Screentation.exe` (a single ~300 MB standalone executable containing the .NET Runtime, Windows App SDK, and all dependency DLLs).
-* `Assets/` (folder containing icons and assets).
+Then compile the classic installer using Inno Setup compiler (`setup.iss`):
+```bash
+& "ISCC.exe" setup.iss
+```
+
+### 2. MSIX Package (Windows Store & Sideloading)
+Clean previous build caches:
+```bash
+dotnet clean -c Release -r win-x64 -p:PublishPackaged=true -p:Platform=x64
+```
+Publish and compile a signed MSIX package:
+```bash
+dotnet publish -c Release -r win-x64 -p:PublishPackaged=true -p:GenerateAppxPackageOnBuild=true -p:Platform=x64 -p:AppxPackageSigningEnabled=true
+```
 
 ### Windows Defender SmartScreen Warning
-Because the application executable is unsigned, Windows Defender SmartScreen may display a warning when launched for the first time.
+Because the standalone setup executable is unsigned, Windows Defender SmartScreen may display a warning when launched for the first time.
 To run the application:
 1. Click the **More info** link.
 2. Click the **Run anyway** button.
