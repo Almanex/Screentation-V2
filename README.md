@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/screenshots/screentation_01.png" width="98%" alt="Screentation is a native Windows application" />
+  <img src="/screenshots/screentation_02.png" width="98%" alt="Screentation is a native Windows application" />
 </p>
 
 [README_RU](docs/README_RU.md) | [README_DE](docs/README_DE.md) | [README_EN](README.md) | [GUIDE_RU](docs/GUIDE_RU.md) | [GUIDE_DE](docs/GUIDE_DE.md) | [GUIDE_EN](docs/GUIDE_EN.md)
